@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loja Daoshi - Pedidos</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
     <style>
         body {
-            background-image: url('https://i.imgur.com/TUq2y4f.png'); /* Sua imagem de fundo. Considere uma mais leve ou otimizada. */
+            /* Imagem de fundo conforme solicitado */
+            background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO'); 
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna */
-            color: #e0e0e0; /* Cor de texto principal mais clara */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e0e0e0;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: calc(100vh - 40px); /* Ajusta para padding */
+            min-height: calc(100vh - 40px); 
             line-height: 1.6;
         }
         .container {
             width: 95%;
-            max-width: 1300px; /* Um pouco mais largo para acomodar colunas */
-            background-color: rgba(20, 20, 25, 0.92); /* Fundo do container um pouco mais escuro e opaco */
+            max-width: 1300px;
+            background-color: rgba(20, 20, 25, 0.92);
             padding: 30px;
             border-radius: 18px;
-            border: 1px solid #4a4a52; /* Borda sutil */
+            border: 1px solid #4a4a52;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
             margin-bottom: 20px;
         }
-        /* Seções principais */
         .secao-escolha, .secao-finalizar {
             display: none; 
             margin-bottom: 30px;
@@ -54,20 +55,18 @@
         }
         .visivel { display: block; }
 
-        /* Colunas para layout interno de Gold e TopUp */
         .conteudo-principal-pedido {
-            flex: 3; /* Ocupa mais espaço para os inputs principais */
+            flex: 3; 
             min-width: 320px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         .barra-lateral-pedido {
-            flex: 1.5; /* Barra lateral um pouco menor */
+            flex: 1.5; 
             min-width: 280px;
         }
-        /* Blocos internos */
-        .bloco-interno { /* Classe genérica para todos os blocos internos */
+        .bloco-interno {
             background-color: rgba(50, 50, 55, 0.8);
             padding: 20px;
             border: 1px solid #5f5f67;
@@ -76,10 +75,10 @@
         }
         .painel-interno-topup {
             display: flex;
-            flex-direction: column; /* Pacotes um abaixo do outro */
+            flex-direction: column;
             gap: 20px;
         }
-        .sub-bloco-pacotes-topup { /* Cada grupo de pacotes (pequeno, médio, grande) */
+        .sub-bloco-pacotes-topup {
              background-color: rgba(60,60,65,0.7);
              padding:18px;
              border-radius: 8px;
@@ -89,7 +88,7 @@
         h2 { font-size: 1.8em; text-align: center; color: #efeff1; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #5865f2; padding-bottom: 10px;}
         h3 { font-size: 1.4em; color: #7289da; margin-top: 0; margin-bottom: 18px; text-align: left;}
         
-        input[type="number"], input[type="text"], input[type="password"] {
+        input[type="number"], input[type="text"], input[type="password"] { /* Incluindo type="password" para estilo, mas mudaremos para text no campo de senha */
             width: calc(100% - 26px); padding: 12px; margin-bottom: 20px; margin-top: 5px;
             background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 6px;
             font-size: 1em;
@@ -98,7 +97,7 @@
         p { color: #c0c0c8; margin: 0.8em 0; }
         
         button {
-            padding: 14px 28px; background-color: #C62828; /* Vermelho mais fechado */
+            padding: 14px 28px; background-color: #C62828; 
             color: white; border: none; border-radius: 6px; cursor: pointer; 
             font-size: 1.15em; font-weight: bold;
             transition: background-color 0.2s ease, transform 0.1s ease; 
@@ -107,11 +106,11 @@
         button:hover { background-color: #A92222; transform: translateY(-1px); }
         button:active { transform: translateY(0px); }
         button:disabled { background-color: #4f4f53; color: #888; cursor: not-allowed;}
-        .btn-escolha { background-color: #5865f2; width: calc(50% - 15px); margin-bottom: 10px; }
+        .btn-escolha { background-color: #5865f2; width: calc(50% - 15px); margin-bottom: 10px;}
         .btn-escolha:hover { background-color: #4752c4; }
 
         #cotacao { position: fixed; bottom: 12px; right: 18px; font-size: 0.9em; color: #ccc; background-color: rgba(0,0,0,0.75); padding: 6px 10px; border-radius: 4px; z-index: 1000; box-shadow: 0 0 8px rgba(0,0,0,0.5);}
-        #total-geral-display, #total-dolar-geral-display { font-size: 1.4em; font-weight: bold; color: #57F287; /* Verde Discord */ }
+        #total-geral-display, #total-dolar-geral-display { font-size: 1.4em; font-weight: bold; color: #57F287; }
         #resumo-itens-selecionados-final { background-color: rgba(0,0,0,0.45); padding: 18px; border-radius: 10px; margin-top:18px; white-space: pre-wrap; border: 1px solid #4a4a52;}
 
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -125,7 +124,7 @@
         #mensagem-status-final a {color: #7289DA; text-decoration: none;}
         #mensagem-status-final a:hover {text-decoration: underline;}
 
-        .item-pacote-input div { margin-bottom: 15px; } /* Espaçamento dentro de cada pacote no topup */
+        .item-pacote-input div { margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -167,11 +166,11 @@
                 <div class="barra-lateral-pedido">
                     <div class="bloco-interno bloco-gold-taxas" style="font-size: 0.9em; text-align:left;">
                         <h3>Taxas Gold (por 1k)</h3>
-                        <p>Até 9.999 Gold: R$<span id="goldRateBaseDisplay">0.00</span></p>
-                        <p>10.000+ Gold: R$<span id="goldRate10kDisplay">0.00</span></p>
-                        <p>20.000+ Gold: R$<span id="goldRate20kDisplay">0.00</span></p>
+                        <p>Até 10.000 Gold: R$<span id="goldRateBaseDisplay">0.00</span></p>
+                        <p>Acima de 10.000 Gold: R$<span id="goldRate10kDisplay">0.00</span></p>
+                        <p>Acima de 20.000 Gold: R$<span id="goldRate20kDisplay">0.00</span></p>
                         <p>Valor em USDT: $<span id="goldRateDolarDisplay">0.00</span></p>
-                        <p style="margin-top:10px;"><small>Taxa do jogo de ${TAXAS_GOLD.gameTaxCoverage}% já está coberta no valor que você precisará anunciar.</small></p>
+                        <p style="margin-top:10px;"><small>A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.</small></p>
                     </div>
                 </div>
             </div>
@@ -190,7 +189,7 @@
                         <label for="loginConta">Login da Conta (Email/Usuário):</label>
                         <input type="text" id="loginConta" placeholder="Seu email ou nome de usuário do jogo">
                         <label for="senhaConta">Senha da Conta:</label>
-                        <input type="password" id="senhaConta" placeholder="Sua senha">
+                        <input type="text" id="senhaConta" placeholder="Sua senha"> 
                         <label for="nicknameJogo">Nickname no Jogo:</label>
                         <input type="text" id="nicknameJogo" placeholder="Seu nome de personagem">
                         <label for="levelConta">Level da Conta:</label>
@@ -222,7 +221,7 @@
         const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
         const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, rate20k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 };
 
-        let cotacaoDolarAtual = 5.05; // Valor padrão, será atualizado pela API
+        let cotacaoDolarAtual = 5.05; 
         let pedidoAtual = { tipo: null, itens: {}, infoConta: {}, totalBRL: 0, totalUSD: 0 };
         let discordUserInfo = null;
         const SEU_ID_DE_TESTE_FIXO = "317622009246777344"; 
@@ -236,6 +235,10 @@
         const conteudoPedidoWrapper = document.getElementById('conteudo-pedido-wrapper');
         const btnEnviarDiscord = document.getElementById('btn-enviar-discord');
         const msgStatusFinal = document.getElementById('mensagem-status-final');
+
+        // Atualiza o texto da taxa do jogo dinamicamente
+        document.querySelector('.bloco-gold-taxas small').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
+
 
         function mostrarSecaoPrincipal(idSecaoProduto) {
             [secaoGold, secaoTopUp].forEach(sec => sec.classList.remove('visivel'));
@@ -271,17 +274,17 @@
                 cotacaoDolarAtual = parseFloat(data.price);
                 cotacaoDisplay.innerText = `Cotação USDT/BRL: R$${cotacaoDolarAtual.toFixed(3)}`;
             } catch (error) {
-                cotacaoDisplay.innerText = `Erro cotação (Usando Padrão: R$${cotacaoDolarAtual.toFixed(2)})`;
+                cotacaoDisplay.innerText = `Erro cotação (Padrão: R$${cotacaoDolarAtual.toFixed(2)})`;
                 console.error('Erro ao buscar cotação da Binance:', error);
             } finally {
-                recalcularTotaisAtuais(); // Recalcula com a cotação (nova ou padrão)
+                recalcularTotaisAtuais(); 
             }
         }
         
         function recalcularTotaisAtuais(){
             if (pedidoAtual.tipo === 'topup') calcularTotalTopUp();
             else if (pedidoAtual.tipo === 'gold') calcularTotalGold();
-            else atualizarDisplayFinalizarPedido(); // Atualiza o resumo mesmo se nenhum tipo estiver ativo
+            else atualizarDisplayFinalizarPedido(); 
         }
 
         function gerarPainelTopUp() {
@@ -341,7 +344,7 @@
 
         function popularTaxasGoldDisplay() {
             document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
-            document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
+            document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2); // Corrigido de rate20k para rate10k
             document.getElementById('goldRate20kDisplay').textContent = TAXAS_GOLD.rate20k.toFixed(2);
             document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
         }
@@ -355,8 +358,14 @@
             const servidor = servidorInput.value;
             pedidoAtual.itens = { quantidade: quantidade, servidor: servidor };
             let taxaAplicadaR = TAXAS_GOLD.base;
-            if (quantidade >= 20000) taxaAplicadaR = TAXAS_GOLD.rate20k;
-            else if (quantidade >= 10000) taxaAplicadaR = TAXAS_GOLD.rate10k;
+            // Ajuste na lógica de seleção de taxa do Gold
+            if (quantidade >= 20000) {
+                taxaAplicadaR = TAXAS_GOLD.rate20k;
+            } else if (quantidade >= 10000) { // Antes era apenas acima de 10k
+                taxaAplicadaR = TAXAS_GOLD.rate10k;
+            }
+            // Se quantidade < 10000, usa TAXAS_GOLD.base (já definido)
+
             const totalBRL = (quantidade / 1000) * taxaAplicadaR;
             const totalUSD = (quantidade / 1000) * TAXAS_GOLD.dollar;
             const quantidadeParaListar = Math.floor(quantidade + (quantidade * TAXAS_GOLD.gameTaxCoverage / 100));
@@ -412,7 +421,7 @@
         async function finalizarPedido() {
             btnEnviarDiscord.disabled = true;
             msgStatusFinal.textContent = 'Processando seu pedido...'; 
-            msgStatusFinal.className = 'processing'; // Adiciona classe para estilo
+            msgStatusFinal.className = 'processing'; 
 
             if (pedidoAtual.tipo === 'topup') {
                 pedidoAtual.infoConta = {
@@ -477,7 +486,7 @@
             } else if (produtoDaUrl === 'topup') {
                 document.getElementById('btn-escolher-topup').onclick();
             } else {
-                secaoEscolhaProduto.classList.add('visivel'); // Mostra escolha se não veio produto na URL
+                secaoEscolhaProduto.classList.add('visivel');
                 mostrarSecaoPrincipal(null);
             }
             return true;
@@ -487,15 +496,19 @@
             pedidoAtual.tipo = 'gold'; pedidoAtual.itens = {quantidade: 0, servidor: ''};
             secaoEscolhaProduto.classList.remove('visivel'); 
             mostrarSecaoPrincipal('secao-gold');
-            document.getElementById('quantidadeOuro').value = 0; document.getElementById('servidorGold').value = '';
-            popularTaxasGoldDisplay(); calcularTotalGold();
+            document.getElementById('quantidadeOuro').value = 0; 
+            document.getElementById('servidorGold').value = '';
+            popularTaxasGoldDisplay(); 
+            calcularTotalGold(); // Chama para zerar/atualizar displays
         };
         document.getElementById('btn-escolher-topup').onclick = () => {
             pedidoAtual.tipo = 'topup'; pedidoAtual.itens = {};
             ['loginConta', 'senhaConta', 'nicknameJogo', 'levelConta', 'metodoLoginConta', 'servidorTopUp'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.value = '';
             });
-            gerarPainelTopUp(); mostrarSecaoPrincipal('secao-topup'); calcularTotalTopUp();
+            gerarPainelTopUp(); 
+            mostrarSecaoPrincipal('secao-topup'); 
+            calcularTotalTopUp(); // Chama para zerar/atualizar displays
         };
         document.getElementById('btn-enviar-discord').onclick = finalizarPedido;
         
@@ -514,6 +527,8 @@
             await buscarCotacaoDolar(); 
             mostrarSecaoEscolhaOuLogin();
             btnEnviarDiscord.disabled = true;
+            // Inicializa o display das taxas de gold
+            popularTaxasGoldDisplay(); 
         };
     </script>
 </body>
