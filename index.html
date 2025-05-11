@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Daoshi - Pedidos</title>
+    <style>
+        body {
+            background-image: url('https://i.imgur.com/TUq2y4f.png'); /* Sua imagem de fundo. Considere uma mais leve ou otimizada. */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna */
+            color: #e0e0e0; /* Cor de texto principal mais clara */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 40px); /* Ajusta para padding */
+            line-height: 1.6;
+        }
+        .container {
+            width: 95%;
+            max-width: 1300px; /* Um pouco mais largo para acomodar colunas */
+            background-color: rgba(20, 20, 25, 0.92); /* Fundo do container um pouco mais escuro e opaco */
+            padding: 30px;
+            border-radius: 18px;
+            border: 1px solid #4a4a52; /* Borda sutil */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+        }
+        /* Seções principais */
+        .secao-escolha, .secao-finalizar {
+            display: none; 
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: rgba(40,40,45,0.7);
+            border-radius: 12px;
+            border: 1px solid #505058;
+        }
+        .secao-gold, .secao-topup {
+             display: none; 
+        }
+        .secao-gold.visivel, .secao-topup.visivel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px; 
+            margin-bottom: 30px;
+            padding: 25px;
+            background-color: rgba(40,40,45,0.7);
+            border-radius: 12px;
+            border: 1px solid #505058;
+        }
+        .visivel { display: block; }
+
+        /* Colunas para layout interno de Gold e TopUp */
+        .conteudo-principal-pedido {
+            flex: 3; /* Ocupa mais espaço para os inputs principais */
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .barra-lateral-pedido {
+            flex: 1.5; /* Barra lateral um pouco menor */
+            min-width: 280px;
+        }
+        /* Blocos internos */
+        .bloco-interno { /* Classe genérica para todos os blocos internos */
+            background-color: rgba(50, 50, 55, 0.8);
+            padding: 20px;
+            border: 1px solid #5f5f67;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+        .painel-interno-topup {
+            display: flex;
+            flex-direction: column; /* Pacotes um abaixo do outro */
+            gap: 20px;
+        }
+        .sub-bloco-pacotes-topup { /* Cada grupo de pacotes (pequeno, médio, grande) */
+             background-color: rgba(60,60,65,0.7);
+             padding:18px;
+             border-radius: 8px;
+        }
+
+        h1 { font-size: 2.2em; text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; text-shadow: 0 0 10px rgba(120, 120, 255, 0.5); }
+        h2 { font-size: 1.8em; text-align: center; color: #efeff1; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #5865f2; padding-bottom: 10px;}
+        h3 { font-size: 1.4em; color: #7289da; margin-top: 0; margin-bottom: 18px; text-align: left;}
+        
+        input[type="number"], input[type="text"], input[type="password"] {
+            width: calc(100% - 26px); padding: 12px; margin-bottom: 20px; margin-top: 5px;
+            background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 6px;
+            font-size: 1em;
+        }
+        label { font-weight: bold; display: block; color: #b0b0b8; margin-bottom: 6px; font-size: 0.95em }
+        p { color: #c0c0c8; margin: 0.8em 0; }
+        
+        button {
+            padding: 14px 28px; background-color: #C62828; /* Vermelho mais fechado */
+            color: white; border: none; border-radius: 6px; cursor: pointer; 
+            font-size: 1.15em; font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.1s ease; 
+            margin-right: 12px; margin-top: 15px;
+        }
+        button:hover { background-color: #A92222; transform: translateY(-1px); }
+        button:active { transform: translateY(0px); }
+        button:disabled { background-color: #4f4f53; color: #888; cursor: not-allowed;}
+        .btn-escolha { background-color: #5865f2; width: calc(50% - 15px); margin-bottom: 10px; }
+        .btn-escolha:hover { background-color: #4752c4; }
+
+        #cotacao { position: fixed; bottom: 12px; right: 18px; font-size: 0.9em; color: #ccc; background-color: rgba(0,0,0,0.75); padding: 6px 10px; border-radius: 4px; z-index: 1000; box-shadow: 0 0 8px rgba(0,0,0,0.5);}
+        #total-geral-display, #total-dolar-geral-display { font-size: 1.4em; font-weight: bold; color: #57F287; /* Verde Discord */ }
+        #resumo-itens-selecionados-final { background-color: rgba(0,0,0,0.45); padding: 18px; border-radius: 10px; margin-top:18px; white-space: pre-wrap; border: 1px solid #4a4a52;}
+
+        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+        #user-info { background-color: rgba(0,0,0,0.3) !important; border: 1px solid #5865f2; }
+        #user-info img { vertical-align: middle; margin-right: 12px; }
+        #mensagem-status-final { font-weight: bold; margin-top:18px !important; padding: 10px; border-radius: 6px; text-align: center; }
+        #mensagem-status-final.success { background-color: rgba(87, 242, 135, 0.2); color: #57F287; border: 1px solid #57F287;}
+        #mensagem-status-final.error { background-color: rgba(237, 66, 69, 0.2); color: #ED4245; border: 1px solid #ED4245;}
+        #mensagem-status-final.processing { background-color: rgba(250, 166, 26, 0.2); color: #FAA61A; border: 1px solid #FAA61A;}
+        #mensagem-status-final a {color: #7289DA; text-decoration: none;}
+        #mensagem-status-final a:hover {text-decoration: underline;}
+
+        .item-pacote-input div { margin-bottom: 15px; } /* Espaçamento dentro de cada pacote no topup */
+    </style>
+</head>
+<body>
+
+    <div class="container" id="container-principal">
+        <h1>Loja Daoshi Gold & Top-Up</h1>
+        <div id="user-info" style="text-align: center; margin-bottom: 25px; display: none; padding: 15px; border-radius: 10px;">
+            <img id="user-avatar" src="" alt="Avatar" style="width: 70px; height: 70px; border-radius: 50%;">
+            <p style="font-size: 1.25em; margin-top: 8px;">Olá, <span id="user-name" style="font-weight: bold;"></span>!</p>
+        </div>
+
+        <div id="login-discord-section" style="text-align: center; margin-bottom: 25px;">
+            <p style="margin-bottom:18px; font-size: 1.1em;">Para uma experiência personalizada e para prosseguir com seu pedido, por favor, conecte-se com sua conta Discord.</p>
+            <button id="btn-login-discord" class="btn-escolha" style="width: auto; padding: 14px 35px; font-size: 1.2em;">🔗 Conectar com Discord (Simulado)</button>
+        </div>
+
+        <div id="secao-escolha-produto" class="secao-escolha">
+            <h2>O que você deseja hoje?</h2>
+            <div style="text-align: center;">
+                <button id="btn-escolher-gold" class="btn-escolha">💰 Comprar Gold</button>
+                <button id="btn-escolher-topup" class="btn-escolha">✨ Fazer Top-Up</button>
+            </div>
+        </div>
+        
+        <div id="conteudo-pedido-wrapper" style="display:none;">
+            <div id="secao-gold" class="secao-gold">
+                <div class="conteudo-principal-pedido">
+                    <div class="bloco-interno bloco-gold-calculo">
+                        <h3>☀️ Comprar Gold ☀️</h3>
+                        <label for="quantidadeOuro">Quantidade de Gold Desejada:</label>
+                        <input type="number" id="quantidadeOuro" value="0" min="0">
+                        <label for="servidorGold">Servidor:</label>
+                        <input type="text" id="servidorGold" placeholder="Insira o servidor do jogo">
+                        <p>Total em R$: R$<span id="totalROuro">0.00</span></p>
+                        <p>Total em $: $<span id="totalDOuro">0.00</span></p>
+                        <p>Gold a anunciar no jogo: <span id="quantidadeAnunciada">0</span></p>
+                    </div>
+                </div>
+                <div class="barra-lateral-pedido">
+                    <div class="bloco-interno bloco-gold-taxas" style="font-size: 0.9em; text-align:left;">
+                        <h3>Taxas Gold (por 1k)</h3>
+                        <p>Até 9.999 Gold: R$<span id="goldRateBaseDisplay">0.00</span></p>
+                        <p>10.000+ Gold: R$<span id="goldRate10kDisplay">0.00</span></p>
+                        <p>20.000+ Gold: R$<span id="goldRate20kDisplay">0.00</span></p>
+                        <p>Valor em USDT: $<span id="goldRateDolarDisplay">0.00</span></p>
+                        <p style="margin-top:10px;"><small>Taxa do jogo de ${TAXAS_GOLD.gameTaxCoverage}% já está coberta no valor que você precisará anunciar.</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="secao-topup" class="secao-topup">
+                 <div class="conteudo-principal-pedido">
+                    <div class="bloco-interno">
+                        <h3>✨ Fazer Top-Up ✨</h3>
+                        <div class="painel-interno-topup" id="painel-interno-topup">
+                            </div>
+                    </div>
+                </div>
+                <div class="barra-lateral-pedido">
+                    <div class="bloco-interno">
+                        <h3>Dados da Conta para Top-Up</h3>
+                        <label for="loginConta">Login da Conta (Email/Usuário):</label>
+                        <input type="text" id="loginConta" placeholder="Seu email ou nome de usuário do jogo">
+                        <label for="senhaConta">Senha da Conta:</label>
+                        <input type="password" id="senhaConta" placeholder="Sua senha">
+                        <label for="nicknameJogo">Nickname no Jogo:</label>
+                        <input type="text" id="nicknameJogo" placeholder="Seu nome de personagem">
+                        <label for="levelConta">Level da Conta:</label>
+                        <input type="text" id="levelConta" placeholder="Seu nível atual no jogo">
+                        <label for="metodoLoginConta">Método de Login da Conta:</label>
+                        <input type="text" id="metodoLoginConta" placeholder="Ex: Gmail, Facebook, Apple ID">
+                        <label for="servidorTopUp">Servidor (se aplicável ao Top-Up):</label>
+                        <input type="text" id="servidorTopUp" placeholder="Ex: NA1, SA2 (opcional)">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="secao-finalizar-pedido" class="secao-finalizar">
+            <h2>Resumo Total do Pedido</h2>
+            <p>Tipo de Pedido: <span id="tipo-pedido-display">N/A</span></p>
+            <div id="resumo-itens-selecionados-final"><p>Selecione um produto e adicione itens.</p></div>
+            <h3>Total Geral: <span id="total-geral-display">R$ 0.00</span> / $<span id="total-dolar-geral-display">0.00</span></h3>
+            
+            <button id="btn-enviar-discord">Confirmar e Criar Ticket no Discord</button>
+            <div id="mensagem-status-final"></div>
+        </div>
+    </div>
+
+    <div id="cotacao" title="Cotação USDT/BRL da Binance API">Carregando cotação...</div>
+
+    <script>
+        const PRECOS_TOPUP_USD_DESCONTO = { 1: 0.90, 3: 2.62, 5: 4.15, 10: 7.40, 30: 21.80, 50: 37.00, 100: 73.50 };
+        const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
+        const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, rate20k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 };
+
+        let cotacaoDolarAtual = 5.05; // Valor padrão, será atualizado pela API
+        let pedidoAtual = { tipo: null, itens: {}, infoConta: {}, totalBRL: 0, totalUSD: 0 };
+        let discordUserInfo = null;
+        const SEU_ID_DE_TESTE_FIXO = "317622009246777344"; 
+
+        const secaoEscolhaProduto = document.getElementById('secao-escolha-produto');
+        const secaoGold = document.getElementById('secao-gold');
+        const secaoTopUp = document.getElementById('secao-topup');
+        const secaoFinalizarPedido = document.getElementById('secao-finalizar-pedido');
+        const userInfoDisplay = document.getElementById('user-info');
+        const loginDiscordSection = document.getElementById('login-discord-section');
+        const conteudoPedidoWrapper = document.getElementById('conteudo-pedido-wrapper');
+        const btnEnviarDiscord = document.getElementById('btn-enviar-discord');
+        const msgStatusFinal = document.getElementById('mensagem-status-final');
+
+        function mostrarSecaoPrincipal(idSecaoProduto) {
+            [secaoGold, secaoTopUp].forEach(sec => sec.classList.remove('visivel'));
+            if (idSecaoProduto) {
+                document.getElementById(idSecaoProduto).classList.add('visivel');
+                conteudoPedidoWrapper.style.display = 'block';
+                secaoFinalizarPedido.classList.add('visivel');
+            } else {
+                conteudoPedidoWrapper.style.display = 'none';
+                secaoFinalizarPedido.classList.remove('visivel');
+            }
+        }
+         function mostrarSecaoEscolhaOuLogin() {
+            if (discordUserInfo) {
+                loginDiscordSection.style.display = 'none';
+                userInfoDisplay.style.display = 'block';
+                secaoEscolhaProduto.classList.add('visivel');
+            } else {
+                loginDiscordSection.style.display = 'block';
+                userInfoDisplay.style.display = 'none';
+                secaoEscolhaProduto.classList.remove('visivel');
+            }
+            mostrarSecaoPrincipal(null); 
+        }
+
+        async function buscarCotacaoDolar() {
+            const cotacaoDisplay = document.getElementById('cotacao');
+            cotacaoDisplay.innerText = 'Buscando cotação...';
+            try {
+                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=USDTBRL');
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+                const data = await response.json();
+                cotacaoDolarAtual = parseFloat(data.price);
+                cotacaoDisplay.innerText = `Cotação USDT/BRL: R$${cotacaoDolarAtual.toFixed(3)}`;
+            } catch (error) {
+                cotacaoDisplay.innerText = `Erro cotação (Usando Padrão: R$${cotacaoDolarAtual.toFixed(2)})`;
+                console.error('Erro ao buscar cotação da Binance:', error);
+            } finally {
+                recalcularTotaisAtuais(); // Recalcula com a cotação (nova ou padrão)
+            }
+        }
+        
+        function recalcularTotaisAtuais(){
+            if (pedidoAtual.tipo === 'topup') calcularTotalTopUp();
+            else if (pedidoAtual.tipo === 'gold') calcularTotalGold();
+            else atualizarDisplayFinalizarPedido(); // Atualiza o resumo mesmo se nenhum tipo estiver ativo
+        }
+
+        function gerarPainelTopUp() {
+            const container = document.getElementById('painel-interno-topup');
+            container.innerHTML = '';
+            const gruposVisuaisPacotes = [
+                { titulo: "Pacotes de $1, $3 e $5", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p <= 5) },
+                { titulo: "Pacotes de $10 e $30", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p > 5 && p <= 30) },
+                { titulo: "Pacotes de $50 e $100", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p > 30) }
+            ];
+
+            gruposVisuaisPacotes.forEach(grupoInfo => {
+                if (grupoInfo.valores.length === 0) return;
+                const divBlocoPacote = document.createElement('div');
+                divBlocoPacote.className = 'sub-bloco-pacotes-topup';
+                const tituloH3 = document.createElement('h3');
+                tituloH3.textContent = grupoInfo.titulo;
+                divBlocoPacote.appendChild(tituloH3);
+                grupoInfo.valores.forEach(valorPacote => {
+                    const precoDesconto = PRECOS_TOPUP_USD_DESCONTO[valorPacote];
+                    const divItemPacote = document.createElement('div');
+                    divItemPacote.className = 'item-pacote-input';
+                    const label = document.createElement('label');
+                    label.htmlFor = `topup-${valorPacote}`;
+                    label.textContent = `Pacote $${valorPacote} (Preço: $${precoDesconto.toFixed(2)}):`;
+                    divItemPacote.appendChild(label);
+                    const input = document.createElement('input');
+                    input.type = 'number'; input.id = `topup-${valorPacote}`;
+                    input.value = pedidoAtual.itens[valorPacote] || 0; input.min = 0;
+                    input.dataset.valor = valorPacote;
+                    input.oninput = () => { 
+                        pedidoAtual.itens[valorPacote] = parseInt(input.value) || 0;
+                        calcularTotalTopUp(); 
+                    };
+                    divItemPacote.appendChild(input);
+                    divBlocoPacote.appendChild(divItemPacote);
+                });
+                container.appendChild(divBlocoPacote);
+            });
+        }
+
+        function calcularTotalTopUp() {
+            let totalUSDDesconto = 0;
+            if(pedidoAtual.itens){ 
+                Object.keys(pedidoAtual.itens).forEach(valorPacoteKey => {
+                    const valorPacote = parseFloat(valorPacoteKey); 
+                    const quantidade = pedidoAtual.itens[valorPacote];
+                    if (quantidade > 0 && PRECOS_TOPUP_USD_DESCONTO[valorPacote]) {
+                        totalUSDDesconto += quantidade * PRECOS_TOPUP_USD_DESCONTO[valorPacote];
+                    }
+                });
+            }
+            pedidoAtual.totalUSD = totalUSDDesconto;
+            pedidoAtual.totalBRL = totalUSDDesconto * cotacaoDolarAtual;
+            atualizarDisplayFinalizarPedido();
+        }
+
+        function popularTaxasGoldDisplay() {
+            document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
+            document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
+            document.getElementById('goldRate20kDisplay').textContent = TAXAS_GOLD.rate20k.toFixed(2);
+            document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
+        }
+
+        function calcularTotalGold() {
+            const quantidadeInput = document.getElementById('quantidadeOuro');
+            const servidorInput = document.getElementById('servidorGold');
+            if (!quantidadeInput || !servidorInput) return; 
+
+            const quantidade = parseInt(quantidadeInput.value) || 0;
+            const servidor = servidorInput.value;
+            pedidoAtual.itens = { quantidade: quantidade, servidor: servidor };
+            let taxaAplicadaR = TAXAS_GOLD.base;
+            if (quantidade >= 20000) taxaAplicadaR = TAXAS_GOLD.rate20k;
+            else if (quantidade >= 10000) taxaAplicadaR = TAXAS_GOLD.rate10k;
+            const totalBRL = (quantidade / 1000) * taxaAplicadaR;
+            const totalUSD = (quantidade / 1000) * TAXAS_GOLD.dollar;
+            const quantidadeParaListar = Math.floor(quantidade + (quantidade * TAXAS_GOLD.gameTaxCoverage / 100));
+            document.getElementById('quantidadeAnunciada').textContent = quantidadeParaListar.toLocaleString('pt-BR');
+            document.getElementById('totalROuro').textContent = totalBRL.toFixed(2);
+            document.getElementById('totalDOuro').textContent = totalUSD.toFixed(2);
+            pedidoAtual.totalBRL = totalBRL;
+            pedidoAtual.totalUSD = totalUSD;
+            atualizarDisplayFinalizarPedido();
+        }
+
+        function atualizarDisplayFinalizarPedido() {
+            const tipoPedidoDisplay = document.getElementById('tipo-pedido-display');
+            const resumoItensDiv = document.getElementById('resumo-itens-selecionados-final');
+            
+            tipoPedidoDisplay.textContent = pedidoAtual.tipo === 'gold' ? 'Compra de Gold' : (pedidoAtual.tipo === 'topup' ? 'Pedido de Top-Up' : 'Nenhum');
+            resumoItensDiv.innerHTML = '';
+            let temAlgoNoPedido = false;
+
+            if (pedidoAtual.tipo === 'topup') {
+                if(pedidoAtual.itens && Object.keys(pedidoAtual.itens).length > 0){
+                    Object.keys(pedidoAtual.itens).forEach(valorPacoteKey => {
+                        const valorPacote = parseFloat(valorPacoteKey);
+                        const quantidade = pedidoAtual.itens[valorPacote];
+                        if (quantidade > 0 && PRECOS_TOPUP_USD_DESCONTO[valorPacote]) {
+                            const p = document.createElement('p');
+                            p.textContent = `Pacote $${valorPacote} (x${quantidade})`;
+                            resumoItensDiv.appendChild(p);
+                            temAlgoNoPedido = true;
+                        }
+                    });
+                }
+                if (!temAlgoNoPedido) resumoItensDiv.innerHTML = '<p>Nenhum pacote de Top-Up adicionado.</p>';
+            } else if (pedidoAtual.tipo === 'gold') {
+                if (pedidoAtual.itens && pedidoAtual.itens.quantidade && pedidoAtual.itens.quantidade > 0) {
+                    const p = document.createElement('p');
+                    p.textContent = `Quantidade de Gold: ${pedidoAtual.itens.quantidade.toLocaleString('pt-BR')}`;
+                    resumoItensDiv.appendChild(p);
+                    const pServidor = document.createElement('p');
+                    pServidor.textContent = `Servidor: ${pedidoAtual.itens.servidor || 'Não informado'}`;
+                    resumoItensDiv.appendChild(pServidor);
+                    temAlgoNoPedido = true;
+                }
+                if (!temAlgoNoPedido) resumoItensDiv.innerHTML = '<p>Nenhuma quantidade de Gold definida.</p>';
+            } else {
+                 resumoItensDiv.innerHTML = '<p>Selecione um tipo de produto para começar.</p>';
+            }
+            document.getElementById('total-geral-display').textContent = `R$ ${pedidoAtual.totalBRL.toFixed(2)}`;
+            document.getElementById('total-dolar-geral-display').textContent = `$ ${pedidoAtual.totalUSD.toFixed(2)}`;
+            btnEnviarDiscord.disabled = !temAlgoNoPedido;
+        }
+
+        async function finalizarPedido() {
+            btnEnviarDiscord.disabled = true;
+            msgStatusFinal.textContent = 'Processando seu pedido...'; 
+            msgStatusFinal.className = 'processing'; // Adiciona classe para estilo
+
+            if (pedidoAtual.tipo === 'topup') {
+                pedidoAtual.infoConta = {
+                    login: document.getElementById('loginConta').value,
+                    senha: document.getElementById('senhaConta').value,
+                    nickname: document.getElementById('nicknameJogo').value,
+                    level: document.getElementById('levelConta').value,
+                    metodoLogin: document.getElementById('metodoLoginConta').value,
+                    servidor: document.getElementById('servidorTopUp').value
+                };
+            } else if (pedidoAtual.tipo === 'gold') {
+                pedidoAtual.infoConta = { servidor: pedidoAtual.itens.servidor };
+            }
+
+            let discordUserId = (discordUserInfo && discordUserInfo.id) ? discordUserInfo.id : SEU_ID_DE_TESTE_FIXO;
+            
+            if (!discordUserId) {
+                msgStatusFinal.textContent = 'Erro: ID do Discord não identificado.'; 
+                msgStatusFinal.className = 'error';
+                btnEnviarDiscord.disabled = false; return;
+            }
+
+            const payload = {
+                userIdDiscord: discordUserId, tipoPedido: pedidoAtual.tipo, itensPedido: pedidoAtual.itens,
+                infoConta: pedidoAtual.infoConta, totalBRL: pedidoAtual.totalBRL.toFixed(2),
+                totalUSD: pedidoAtual.totalUSD.toFixed(2), cotacaoUsadaBRL: cotacaoDolarAtual.toFixed(4),
+                informacoesPagamento: { pix: "CELULAR 14988231270 Nome: DAOSHI TRADE", binance: "estrela203@hotmail.com" }
+            };
+            console.log("Enviando Payload para API do Bot:", JSON.stringify(payload, null, 2));
+
+            try {
+                const response = await fetch('http://localhost:3001/api-interna/criar-ticket-do-site', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                });
+                const resultadoApi = await response.json();
+                if (response.ok && resultadoApi.success) {
+                    msgStatusFinal.innerHTML = `Ticket criado com sucesso! ${resultadoApi.threadUrl ? `<br><a href="${resultadoApi.threadUrl}" target="_blank">Acesse seu ticket aqui.</a>` : 'Verifique o Discord.'}`;
+                    msgStatusFinal.className = 'success';
+                } else {
+                    msgStatusFinal.textContent = `Erro ao criar ticket: ${resultadoApi.message || 'Falha desconhecida.'}`;
+                    msgStatusFinal.className = 'error';
+                }
+            } catch (error) {
+                console.error('Erro ao chamar API do bot:', error);
+                msgStatusFinal.textContent = 'Erro de comunicação. Verifique o console do navegador (F12) e do bot.';
+                msgStatusFinal.className = 'error';
+            } finally {
+                btnEnviarDiscord.disabled = false;
+            }
+        }
+        
+        function simularLoginDiscordEProcessarProduto(produtoDaUrl = null) {
+            discordUserInfo = { id: SEU_ID_DE_TESTE_FIXO, username: "Daoshi Cliente Web", avatar: "https://cdn.discordapp.com/embed/avatars/1.png" };
+            document.getElementById('user-name').textContent = discordUserInfo.username;
+            document.getElementById('user-avatar').src = discordUserInfo.avatar;
+            userInfoDisplay.style.display = 'block';
+            loginDiscordSection.style.display = 'none';
+            secaoEscolhaProduto.classList.remove('visivel');
+
+            if (produtoDaUrl === 'gold') {
+                document.getElementById('btn-escolher-gold').onclick();
+            } else if (produtoDaUrl === 'topup') {
+                document.getElementById('btn-escolher-topup').onclick();
+            } else {
+                secaoEscolhaProduto.classList.add('visivel'); // Mostra escolha se não veio produto na URL
+                mostrarSecaoPrincipal(null);
+            }
+            return true;
+        }
+
+        document.getElementById('btn-escolher-gold').onclick = () => {
+            pedidoAtual.tipo = 'gold'; pedidoAtual.itens = {quantidade: 0, servidor: ''};
+            secaoEscolhaProduto.classList.remove('visivel'); 
+            mostrarSecaoPrincipal('secao-gold');
+            document.getElementById('quantidadeOuro').value = 0; document.getElementById('servidorGold').value = '';
+            popularTaxasGoldDisplay(); calcularTotalGold();
+        };
+        document.getElementById('btn-escolher-topup').onclick = () => {
+            pedidoAtual.tipo = 'topup'; pedidoAtual.itens = {};
+            ['loginConta', 'senhaConta', 'nicknameJogo', 'levelConta', 'metodoLoginConta', 'servidorTopUp'].forEach(id => {
+                const el = document.getElementById(id); if(el) el.value = '';
+            });
+            gerarPainelTopUp(); mostrarSecaoPrincipal('secao-topup'); calcularTotalTopUp();
+        };
+        document.getElementById('btn-enviar-discord').onclick = finalizarPedido;
+        
+        document.getElementById('btn-login-discord').onclick = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const produtoSelecionadoUrl = urlParams.get('produto');
+            simularLoginDiscordEProcessarProduto(produtoSelecionadoUrl);
+        };
+        
+        const inputQtdOuro = document.getElementById('quantidadeOuro');
+        const inputServidorGold = document.getElementById('servidorGold');
+        if(inputQtdOuro) inputQtdOuro.oninput = calcularTotalGold;
+        if(inputServidorGold) inputServidorGold.oninput = calcularTotalGold;
+
+        window.onload = async () => {
+            await buscarCotacaoDolar(); 
+            mostrarSecaoEscolhaOuLogin();
+            btnEnviarDiscord.disabled = true;
+        };
+    </script>
+</body>
+</html>
