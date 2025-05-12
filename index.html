@@ -6,123 +6,57 @@
     <title>Loja Daoshi - Pedidos</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
     <style>
+        /* Seus estilos CSS (da resposta anterior) permanecem os mesmos. Cole-os aqui. */
+        /* Para economizar espaço, não vou repetir todo o CSS aqui, mas use o da resposta anterior */
         body {
             background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO'); 
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: calc(100vh - 30px); 
-            line-height: 1.5; 
+            background-size: cover; background-repeat: no-repeat; background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #e0e0e0;
+            margin: 0; padding: 15px; display: flex; flex-direction: column;
+            align-items: center; min-height: calc(100vh - 30px); line-height: 1.5; 
         }
         .container {
-            width: 98%; 
-            max-width: 1350px;
-            background-color: rgba(20, 20, 25, 0.93);
-            padding: 20px; 
-            border-radius: 15px;
-            border: 1px solid #4a4a52;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-            margin-bottom: 15px;
+            width: 98%; max-width: 1350px; background-color: rgba(20, 20, 25, 0.93);
+            padding: 20px; border-radius: 15px; border: 1px solid #4a4a52;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); margin-bottom: 15px;
         }
-        .secao-escolha, .secao-finalizar {
-            display: none; 
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: rgba(40,40,45,0.75);
-            border-radius: 10px;
-            border: 1px solid #505058;
+        .secao-escolha, .secao-finalizar, .secao-loading { /* Adicionada secao-loading */
+            display: none; margin-bottom: 20px; padding: 20px;
+            background-color: rgba(40,40,45,0.75); border-radius: 10px; border: 1px solid #505058;
         }
-        .secao-gold, .secao-topup {
-             display: none; 
-        }
+        .secao-gold, .secao-topup { display: none; }
         .secao-gold.visivel, .secao-topup.visivel {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; 
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: rgba(40,40,45,0.75);
-            border-radius: 10px;
-            border: 1px solid #505058;
+            display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;
+            padding: 20px; background-color: rgba(40,40,45,0.75);
+            border-radius: 10px; border: 1px solid #505058;
         }
         .visivel { display: block; }
-
-        .conteudo-principal-pedido {
-            flex: 2.5; 
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .barra-lateral-pedido {
-            flex: 1; 
-            min-width: 260px;
-        }
-        .bloco-interno {
-            background-color: rgba(50, 50, 55, 0.85);
-            padding: 18px; 
-            border: 1px solid #5f5f67;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        
-        .painel-interno-topup {
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 18px; 
-        }
-        .item-pacote-topup {
-             background-color: rgba(60,60,65,0.75);
-             padding:15px;
-             border-radius: 8px;
-             border: 1px solid #555;
-        }
-
+        .conteudo-principal-pedido { flex: 2.5; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
+        .barra-lateral-pedido { flex: 1; min-width: 260px; }
+        .bloco-interno { background-color: rgba(50, 50, 55, 0.85); padding: 18px; border: 1px solid #5f5f67; border-radius: 8px; box-sizing: border-box; }
+        .painel-interno-topup { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .item-pacote-topup { background-color: rgba(60,60,65,0.75); padding:15px; border-radius: 8px; border: 1px solid #555;}
         h1 { font-size: 2em; text-align: center; color: #fff; margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 8px rgba(120, 120, 255, 0.4); }
         h2 { font-size: 1.6em; text-align: center; color: #efeff1; margin-top: 0; margin-bottom: 18px; border-bottom: 1px solid #5865f2; padding-bottom: 8px;}
         h3 { font-size: 1.25em; color: #7289da; margin-top: 0; margin-bottom: 15px; text-align: left;}
-        
-        input[type="number"], input[type="text"], input[type="password"] {
-            width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; margin-top: 4px;
-            background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 5px;
-            font-size: 0.95em;
-        }
+        input[type="number"], input[type="text"], input[type="password"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; margin-top: 4px; background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 5px; font-size: 0.95em;}
         label { font-weight: bold; display: block; color: #b0b0b8; margin-bottom: 4px; font-size: 0.9em }
         p { color: #c0c0c8; margin: 0.6em 0; font-size: 0.95em; }
-        
-        button {
-            padding: 12px 24px; background-color: #C62828; 
-            color: white; border: none; border-radius: 5px; cursor: pointer; 
-            font-size: 1.05em; font-weight: bold;
-            transition: background-color 0.2s ease, transform 0.1s ease; 
-            margin-right: 10px; margin-top: 12px;
-        }
+        button { padding: 12px 24px; background-color: #C62828; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.05em; font-weight: bold; transition: background-color 0.2s ease, transform 0.1s ease; margin-right: 10px; margin-top: 12px; }
         button:hover { background-color: #A92222; transform: translateY(-1px); }
         button:active { transform: translateY(0px); }
         button:disabled { background-color: #4f4f53; color: #888; cursor: not-allowed;}
         .btn-escolha { background-color: #5865f2; width: calc(50% - 12px); margin-bottom: 8px;}
         .btn-escolha:hover { background-color: #4752c4; }
-
         #cotacao { position: fixed; bottom: 8px; right: 12px; font-size: 0.85em; color: #ccc; background-color: rgba(0,0,0,0.8); padding: 5px 8px; border-radius: 4px; z-index: 1000; box-shadow: 0 0 6px rgba(0,0,0,0.4);}
         #total-geral-display, #total-dolar-geral-display { font-size: 1.3em; font-weight: bold; color: #57F287; }
         #resumo-itens-selecionados-final { background-color: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-top:15px; white-space: pre-wrap; border: 1px solid #4a4a52;}
-
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
-        
         #user-info { background-color: rgba(0,0,0,0.35) !important; border: 1px solid #5865f2; }
         #user-info img { vertical-align: middle; margin-right: 12px; width: 60px; height: 60px; border-radius: 50%;}
         #user-info p { font-size: 1.15em; margin-top: 5px;}
-        /* Nova classe para a instrução */
         .instrucao-pedido { font-size: 0.95em; color: #b0b8d0; margin-top: 8px !important; }
-
         #mensagem-status-final { font-weight: bold; margin-top:15px !important; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.95em; }
         #mensagem-status-final.success { background-color: rgba(87, 242, 135, 0.25); color: #57F287; border: 1px solid #57F287;}
         #mensagem-status-final.error { background-color: rgba(237, 66, 69, 0.25); color: #ED4245; border: 1px solid #ED4245;}
@@ -135,19 +69,20 @@
 
     <div class="container" id="container-principal">
         <h1>Loja Daoshi Gold & Top-Up</h1>
+        
+        <div id="secao-loading" class="visivel" style="text-align: center; padding: 30px;">
+            <p id="loading-message">Conectando com o Discord e carregando seu perfil...</p>
+            </div>
+
         <div id="user-info" style="text-align: center; margin-bottom: 25px; display: none; padding: 15px; border-radius: 10px;">
             <img id="user-avatar" src="" alt="Avatar">
             <p>Olá, <span id="user-name" style="font-weight: bold;"></span>!</p>
             <p class="instrucao-pedido">Preencha os detalhes do seu pedido abaixo e clique em "Confirmar" para criar seu ticket no Discord.</p>
         </div>
 
-        <div id="login-discord-section" style="text-align: center; margin-bottom: 25px;">
-            <p style="margin-bottom:18px; font-size: 1.1em;">Para uma experiência personalizada e para prosseguir com seu pedido, por favor, conecte-se com sua conta Discord.</p>
-            <button id="btn-login-discord" class="btn-escolha" style="width: auto; padding: 14px 35px; font-size: 1.2em;">🔗 Conectar com Discord (Simulado)</button>
-        </div>
-
         <div id="secao-escolha-produto" class="secao-escolha">
             <h2>O que você deseja hoje?</h2>
+            <p>Não conseguimos identificar seu pedido inicial. Por favor, escolha uma opção:</p>
             <div style="text-align: center;">
                 <button id="btn-escolher-gold" class="btn-escolha">💰 Comprar Gold</button>
                 <button id="btn-escolher-topup" class="btn-escolha">✨ Fazer Top-Up</button>
@@ -178,13 +113,11 @@
                     </div>
                 </div>
             </div>
-
             <div id="secao-topup" class="secao-topup">
                  <div class="conteudo-principal-pedido">
                     <div class="bloco-interno">
                         <h3>✨ Fazer Top-Up ✨</h3>
-                        <div class="painel-interno-topup" id="painel-interno-topup">
-                            </div>
+                        <div class="painel-interno-topup" id="painel-interno-topup"></div>
                     </div>
                 </div>
                 <div class="barra-lateral-pedido">
@@ -212,7 +145,6 @@
             <p>Tipo de Pedido: <span id="tipo-pedido-display">N/A</span></p>
             <div id="resumo-itens-selecionados-final"><p>Selecione um produto e adicione itens.</p></div>
             <h3>Total Geral: <span id="total-geral-display">R$ 0.00</span> / $<span id="total-dolar-geral-display">0.00</span></h3>
-            
             <button id="btn-enviar-discord">Confirmar e Criar Ticket no Discord</button>
             <div id="mensagem-status-final"></div>
         </div>
@@ -221,32 +153,27 @@
     <div id="cotacao" title="Cotação USDT/BRL da Binance API">Carregando cotação...</div>
 
     <script>
+        // --- Suas constantes PRECOS_TOPUP_USD_DESCONTO, PACOTES_TOPUP_DISPONIVEIS, TAXAS_GOLD ---
         const PRECOS_TOPUP_USD_DESCONTO = { 1: 0.90, 3: 2.62, 5: 4.15, 10: 7.40, 30: 21.80, 50: 37.00, 100: 73.50 };
         const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
-        // Ajuste nas TAXAS_GOLD para refletir a remoção da faixa de 20k como diferente da de 10k
-        const TAXAS_GOLD = { 
-            base: 29.00,    // Até 10.000 Gold (ou seja, < 10000)
-            rate10k: 28.00, // 10.000 Gold ou mais
-            // rate20k: 28.00, // Removida, pois será coberta pela lógica de rate10k
-            dollar: 4.80,
-            gameTaxCoverage: 5.3 
-        };
+        const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 }; // Simplificado para duas faixas
 
         let cotacaoDolarAtual = 5.05; 
         let pedidoAtual = { tipo: null, itens: {}, infoConta: {}, totalBRL: 0, totalUSD: 0 };
         let discordUserInfo = null;
-        const SEU_ID_DE_TESTE_FIXO = "317622009246777344"; 
 
+        // --- Referências aos Elementos do DOM ---
+        const secaoLoading = document.getElementById('secao-loading');
         const secaoEscolhaProduto = document.getElementById('secao-escolha-produto');
         const secaoGold = document.getElementById('secao-gold');
         const secaoTopUp = document.getElementById('secao-topup');
         const secaoFinalizarPedido = document.getElementById('secao-finalizar-pedido');
         const userInfoDisplay = document.getElementById('user-info');
-        const loginDiscordSection = document.getElementById('login-discord-section');
+        // Removido loginDiscordSection pois não haverá mais botão de login explícito no site
         const conteudoPedidoWrapper = document.getElementById('conteudo-pedido-wrapper');
         const btnEnviarDiscord = document.getElementById('btn-enviar-discord');
         const msgStatusFinal = document.getElementById('mensagem-status-final');
-
+        
         document.getElementById('info-taxa-jogo-gold').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
 
         function mostrarSecaoPrincipal(idSecaoProduto) {
@@ -260,20 +187,41 @@
                 secaoFinalizarPedido.classList.remove('visivel');
             }
         }
-         function mostrarSecaoEscolhaOuLogin() {
-            if (discordUserInfo) {
-                loginDiscordSection.style.display = 'none';
+        // Esta função não é mais para mostrar/esconder o botão de login,
+        // mas para configurar a UI após o login (real ou falha).
+        function configurarUIAposLogin(isLoggedIn, produtoParaProcessar = null) {
+            secaoLoading.classList.remove('visivel'); // Esconde o loading
+
+            if (isLoggedIn && discordUserInfo) {
                 userInfoDisplay.style.display = 'block'; // Mostra info do usuário
-                // A instrução já está no HTML dentro de #user-info, então ela aparecerá com o restante
-                secaoEscolhaProduto.classList.add('visivel');
+                // A instrução já está no HTML dentro de #user-info
+                
+                // Agora, processa o produto
+                if (produtoParaProcessar === 'gold') {
+                    document.getElementById('btn-escolher-gold').onclick();
+                } else if (produtoParaProcessar === 'topup') {
+                    document.getElementById('btn-escolher-topup').onclick();
+                } else {
+                    // Se nenhum produto ou produto inválido, mostra a escolha
+                    console.warn("Produto não especificado ou inválido após login, mostrando escolha.");
+                    secaoEscolhaProduto.classList.add('visivel');
+                    mostrarSecaoPrincipal(null);
+                }
             } else {
-                loginDiscordSection.style.display = 'block';
+                // Falha no login ou usuário não autenticado
                 userInfoDisplay.style.display = 'none';
-                secaoEscolhaProduto.classList.remove('visivel');
+                secaoEscolhaProduto.classList.remove('visivel'); // Não mostra escolha se o login falhou
+                mostrarSecaoPrincipal(null); 
+                document.getElementById('loading-message').textContent = 'Falha ao conectar com o Discord. Por favor, tente recarregar a página ou verifique se você autorizou o aplicativo no Discord.';
+                secaoLoading.classList.add('visivel'); // Mostra a mensagem de erro no lugar do loading
             }
-            mostrarSecaoPrincipal(null); 
         }
 
+        // --- Suas funções buscarCotacaoDolar, recalcularTotaisAtuais, gerarPainelTopUp, 
+        // calcularTotalTopUp, popularTaxasGoldDisplay, calcularTotalGold, 
+        // atualizarDisplayFinalizarPedido, finalizarPedido permanecem as mesmas da resposta anterior ---
+        // Cole-as aqui. Para economizar espaço, não vou repetir todas.
+        // Apenas certifique-se que `calcularTotalGold` use a lógica de taxa simplificada.
         async function buscarCotacaoDolar() {
             const cotacaoDisplay = document.getElementById('cotacao');
             cotacaoDisplay.innerText = 'Buscando cotação...';
@@ -290,44 +238,32 @@
                 recalcularTotaisAtuais(); 
             }
         }
-        
         function recalcularTotaisAtuais(){
             if (pedidoAtual.tipo === 'topup') calcularTotalTopUp();
             else if (pedidoAtual.tipo === 'gold') calcularTotalGold();
             else atualizarDisplayFinalizarPedido(); 
         }
-
-        function gerarPainelTopUp() {
+        function gerarPainelTopUp() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */ 
             const container = document.getElementById('painel-interno-topup');
             container.innerHTML = ''; 
-
             PACOTES_TOPUP_DISPONIVEIS.forEach(valorPacote => {
                 const precoDesconto = PRECOS_TOPUP_USD_DESCONTO[valorPacote];
-                
                 const divItemPacote = document.createElement('div');
                 divItemPacote.className = 'item-pacote-topup';
-
                 const label = document.createElement('label');
                 label.htmlFor = `topup-${valorPacote}`;
                 label.textContent = `Pacote $${valorPacote} (Preço: $${precoDesconto.toFixed(2)}):`;
                 divItemPacote.appendChild(label);
-
                 const input = document.createElement('input');
-                input.type = 'number'; 
-                input.id = `topup-${valorPacote}`;
-                input.value = pedidoAtual.itens[valorPacote] || 0; 
-                input.min = 0;
+                input.type = 'number'; input.id = `topup-${valorPacote}`;
+                input.value = pedidoAtual.itens[valorPacote] || 0; input.min = 0;
                 input.dataset.valor = valorPacote;
-                input.oninput = () => { 
-                    pedidoAtual.itens[valorPacote] = parseInt(input.value) || 0;
-                    calcularTotalTopUp(); 
-                };
+                input.oninput = () => { pedidoAtual.itens[valorPacote] = parseInt(input.value) || 0; calcularTotalTopUp(); };
                 divItemPacote.appendChild(input);
                 container.appendChild(divItemPacote);
             });
         }
-
-        function calcularTotalTopUp() {
+        function calcularTotalTopUp() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
             let totalUSDDesconto = 0;
             if(pedidoAtual.itens){ 
                 Object.keys(pedidoAtual.itens).forEach(valorPacoteKey => {
@@ -342,30 +278,22 @@
             pedidoAtual.totalBRL = totalUSDDesconto * cotacaoDolarAtual;
             atualizarDisplayFinalizarPedido();
         }
-
-        function popularTaxasGoldDisplay() {
+        function popularTaxasGoldDisplay() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR, ATUALIZADA ABAIXO... */
             document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
             document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
-            // Removido o display para rate20kDisplay pois não existe mais como taxa separada
+            // Removida a linha para goldRate20kDisplay
             document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
         }
-
-        function calcularTotalGold() {
+        function calcularTotalGold() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR, ATUALIZADA ABAIXO... */
             const quantidadeInput = document.getElementById('quantidadeOuro');
             const servidorInput = document.getElementById('servidorGold');
             if (!quantidadeInput || !servidorInput) return; 
-
             const quantidade = parseInt(quantidadeInput.value) || 0;
             const servidor = servidorInput.value;
             pedidoAtual.itens = { quantidade: quantidade, servidor: servidor };
-            
             let taxaAplicadaR;
-            if (quantidade >= 10000) { // 10.000 Gold ou mais
-                taxaAplicadaR = TAXAS_GOLD.rate10k;
-            } else { // Abaixo de 10.000 Gold
-                taxaAplicadaR = TAXAS_GOLD.base;
-            }
-
+            if (quantidade >= 10000) { taxaAplicadaR = TAXAS_GOLD.rate10k; } 
+            else { taxaAplicadaR = TAXAS_GOLD.base; }
             const totalBRL = (quantidade / 1000) * taxaAplicadaR;
             const totalUSD = (quantidade / 1000) * TAXAS_GOLD.dollar;
             const quantidadeParaListar = Math.floor(quantidade + (quantidade * TAXAS_GOLD.gameTaxCoverage / 100));
@@ -376,74 +304,46 @@
             pedidoAtual.totalUSD = totalUSD;
             atualizarDisplayFinalizarPedido();
         }
-
-        function atualizarDisplayFinalizarPedido() {
+        function atualizarDisplayFinalizarPedido() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
             const tipoPedidoDisplay = document.getElementById('tipo-pedido-display');
             const resumoItensDiv = document.getElementById('resumo-itens-selecionados-final');
-            
             tipoPedidoDisplay.textContent = pedidoAtual.tipo === 'gold' ? 'Compra de Gold' : (pedidoAtual.tipo === 'topup' ? 'Pedido de Top-Up' : 'Nenhum');
-            resumoItensDiv.innerHTML = '';
-            let temAlgoNoPedido = false;
-
+            resumoItensDiv.innerHTML = ''; let temAlgoNoPedido = false;
             if (pedidoAtual.tipo === 'topup') {
                 if(pedidoAtual.itens && Object.keys(pedidoAtual.itens).length > 0){
                     Object.keys(pedidoAtual.itens).forEach(valorPacoteKey => {
-                        const valorPacote = parseFloat(valorPacoteKey);
-                        const quantidade = pedidoAtual.itens[valorPacote];
+                        const valorPacote = parseFloat(valorPacoteKey); const quantidade = pedidoAtual.itens[valorPacote];
                         if (quantidade > 0 && PRECOS_TOPUP_USD_DESCONTO[valorPacote]) {
-                            const p = document.createElement('p');
-                            p.textContent = `Pacote $${valorPacote} (x${quantidade})`;
-                            resumoItensDiv.appendChild(p);
-                            temAlgoNoPedido = true;
+                            const p = document.createElement('p'); p.textContent = `Pacote $${valorPacote} (x${quantidade})`;
+                            resumoItensDiv.appendChild(p); temAlgoNoPedido = true;
                         }
                     });
                 }
                 if (!temAlgoNoPedido) resumoItensDiv.innerHTML = '<p>Nenhum pacote de Top-Up adicionado.</p>';
             } else if (pedidoAtual.tipo === 'gold') {
                 if (pedidoAtual.itens && pedidoAtual.itens.quantidade && pedidoAtual.itens.quantidade > 0) {
-                    const p = document.createElement('p');
-                    p.textContent = `Quantidade de Gold: ${pedidoAtual.itens.quantidade.toLocaleString('pt-BR')}`;
-                    resumoItensDiv.appendChild(p);
-                    const pServidor = document.createElement('p');
+                    const p = document.createElement('p'); p.textContent = `Quantidade de Gold: ${pedidoAtual.itens.quantidade.toLocaleString('pt-BR')}`;
+                    resumoItensDiv.appendChild(p); const pServidor = document.createElement('p');
                     pServidor.textContent = `Servidor: ${pedidoAtual.itens.servidor || 'Não informado'}`;
-                    resumoItensDiv.appendChild(pServidor);
-                    temAlgoNoPedido = true;
+                    resumoItensDiv.appendChild(pServidor); temAlgoNoPedido = true;
                 }
                 if (!temAlgoNoPedido) resumoItensDiv.innerHTML = '<p>Nenhuma quantidade de Gold definida.</p>';
-            } else {
-                 resumoItensDiv.innerHTML = '<p>Selecione um tipo de produto para começar.</p>';
-            }
+            } else { resumoItensDiv.innerHTML = '<p>Selecione um tipo de produto para começar.</p>'; }
             document.getElementById('total-geral-display').textContent = `R$ ${pedidoAtual.totalBRL.toFixed(2)}`;
             document.getElementById('total-dolar-geral-display').textContent = `$ ${pedidoAtual.totalUSD.toFixed(2)}`;
             btnEnviarDiscord.disabled = !temAlgoNoPedido;
         }
-
-        async function finalizarPedido() {
-            btnEnviarDiscord.disabled = true;
-            msgStatusFinal.textContent = 'Processando seu pedido...'; 
-            msgStatusFinal.className = 'processing'; 
-
+        async function finalizarPedido() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
+            btnEnviarDiscord.disabled = true; msgStatusFinal.textContent = 'Processando seu pedido...'; msgStatusFinal.className = 'processing'; 
             if (pedidoAtual.tipo === 'topup') {
                 pedidoAtual.infoConta = {
-                    login: document.getElementById('loginConta').value,
-                    senha: document.getElementById('senhaConta').value,
-                    nickname: document.getElementById('nicknameJogo').value,
-                    level: document.getElementById('levelConta').value,
-                    metodoLogin: document.getElementById('metodoLoginConta').value,
-                    servidor: document.getElementById('servidorTopUp').value
+                    login: document.getElementById('loginConta').value, senha: document.getElementById('senhaConta').value,
+                    nickname: document.getElementById('nicknameJogo').value, level: document.getElementById('levelConta').value,
+                    metodoLogin: document.getElementById('metodoLoginConta').value, servidor: document.getElementById('servidorTopUp').value
                 };
-            } else if (pedidoAtual.tipo === 'gold') {
-                pedidoAtual.infoConta = { servidor: pedidoAtual.itens.servidor };
-            }
-
-            let discordUserId = (discordUserInfo && discordUserInfo.id) ? discordUserInfo.id : SEU_ID_DE_TESTE_FIXO;
-            
-            if (!discordUserId) {
-                msgStatusFinal.textContent = 'Erro: ID do Discord não identificado.'; 
-                msgStatusFinal.className = 'error';
-                btnEnviarDiscord.disabled = false; return;
-            }
-
+            } else if (pedidoAtual.tipo === 'gold') { pedidoAtual.infoConta = { servidor: pedidoAtual.itens.servidor }; }
+            let discordUserId = (discordUserInfo && discordUserInfo.id) ? discordUserInfo.id : null; // Pega do OAuth2
+            if (!discordUserId) { msgStatusFinal.textContent = 'Erro: Usuário Discord não autenticado.'; msgStatusFinal.className = 'error'; btnEnviarDiscord.disabled = false; return; }
             const payload = {
                 userIdDiscord: discordUserId, tipoPedido: pedidoAtual.tipo, itensPedido: pedidoAtual.itens,
                 infoConta: pedidoAtual.infoConta, totalBRL: pedidoAtual.totalBRL.toFixed(2),
@@ -451,48 +351,20 @@
                 informacoesPagamento: { pix: "CELULAR 14988231270 Nome: DAOSHI TRADE", binance: "estrela203@hotmail.com" }
             };
             console.log("Enviando Payload para API do Bot:", JSON.stringify(payload, null, 2));
-
             try {
-                const response = await fetch('http://localhost:3001/api-interna/criar-ticket-do-site', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-                });
+                const response = await fetch('http://localhost:3001/api-interna/criar-ticket-do-site', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const resultadoApi = await response.json();
                 if (response.ok && resultadoApi.success) {
                     msgStatusFinal.innerHTML = `Ticket criado com sucesso! ${resultadoApi.threadUrl ? `<br><a href="${resultadoApi.threadUrl}" target="_blank">Acesse seu ticket aqui.</a>` : 'Verifique o Discord.'}`;
                     msgStatusFinal.className = 'success';
-                } else {
-                    msgStatusFinal.textContent = `Erro ao criar ticket: ${resultadoApi.message || 'Falha desconhecida.'}`;
-                    msgStatusFinal.className = 'error';
-                }
+                } else { msgStatusFinal.textContent = `Erro ao criar ticket: ${resultadoApi.message || 'Falha desconhecida.'}`; msgStatusFinal.className = 'error'; }
             } catch (error) {
                 console.error('Erro ao chamar API do bot:', error);
-                msgStatusFinal.textContent = 'Erro de comunicação. Verifique o console do navegador (F12) e do bot.';
-                msgStatusFinal.className = 'error';
-            } finally {
-                btnEnviarDiscord.disabled = false;
-            }
-        }
-        
-        function simularLoginDiscordEProcessarProduto(produtoDaUrl = null) {
-            discordUserInfo = { id: SEU_ID_DE_TESTE_FIXO, username: "Daoshi Cliente Web", avatar: "https://cdn.discordapp.com/embed/avatars/1.png" };
-            document.getElementById('user-name').textContent = discordUserInfo.username;
-            document.getElementById('user-avatar').src = discordUserInfo.avatar;
-            // A instrução já está no HTML e será exibida junto com user-info
-            userInfoDisplay.style.display = 'block'; 
-            loginDiscordSection.style.display = 'none';
-            secaoEscolhaProduto.classList.remove('visivel');
-
-            if (produtoDaUrl === 'gold') {
-                document.getElementById('btn-escolher-gold').onclick();
-            } else if (produtoDaUrl === 'topup') {
-                document.getElementById('btn-escolher-topup').onclick();
-            } else {
-                secaoEscolhaProduto.classList.add('visivel');
-                mostrarSecaoPrincipal(null);
-            }
-            return true;
+                msgStatusFinal.textContent = 'Erro de comunicação. Verifique o console do navegador (F12) e do bot.'; msgStatusFinal.className = 'error';
+            } finally { btnEnviarDiscord.disabled = false; }
         }
 
+        // --- Event Listeners para botões de escolha de produto ---
         document.getElementById('btn-escolher-gold').onclick = () => {
             pedidoAtual.tipo = 'gold'; pedidoAtual.itens = {quantidade: 0, servidor: ''};
             secaoEscolhaProduto.classList.remove('visivel'); 
@@ -513,22 +385,56 @@
         };
         document.getElementById('btn-enviar-discord').onclick = finalizarPedido;
         
-        document.getElementById('btn-login-discord').onclick = () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const produtoSelecionadoUrl = urlParams.get('produto');
-            simularLoginDiscordEProcessarProduto(produtoSelecionadoUrl);
-        };
-        
+        // --- Listeners para inputs de Gold ---
         const inputQtdOuro = document.getElementById('quantidadeOuro');
         const inputServidorGold = document.getElementById('servidorGold');
         if(inputQtdOuro) inputQtdOuro.oninput = calcularTotalGold;
         if(inputServidorGold) inputServidorGold.oninput = calcularTotalGold;
 
+        // --- Inicialização da Página e Lógica OAuth2 ---
         window.onload = async () => {
             await buscarCotacaoDolar(); 
-            mostrarSecaoEscolhaOuLogin();
             btnEnviarDiscord.disabled = true;
-            popularTaxasGoldDisplay(); 
+            popularTaxasGoldDisplay();
+
+            const fragmentParams = new URLSearchParams(window.location.hash.substring(1)); // Remove o '#'
+            const userDataFromFragment = {
+                discord_id: fragmentParams.get('discord_id'),
+                username: fragmentParams.get('username'),
+                avatar: fragmentParams.get('avatar'),
+                email: fragmentParams.get('email'),
+                state_produto: fragmentParams.get('state_produto') // Pega o produto do state
+            };
+
+            if (userDataFromFragment.discord_id) { // Veio do callback OAuth2
+                localStorage.setItem('discordUser', JSON.stringify(userDataFromFragment));
+                // Limpa o fragmento e reconstrói a URL com o ?produto= se existir no state
+                let cleanUrl = window.location.pathname;
+                if (userDataFromFragment.state_produto) {
+                    cleanUrl += `?produto=${userDataFromFragment.state_produto}`;
+                }
+                window.history.replaceState(null, null, cleanUrl); 
+                discordUserInfo = userDataFromFragment; // Usa os dados frescos do callback
+            } else {
+                // Tenta carregar do localStorage se não veio do callback (ex: refresh da página)
+                const storedUser = localStorage.getItem('discordUser');
+                if (storedUser) {
+                    try { discordUserInfo = JSON.parse(storedUser); } catch (e) { localStorage.removeItem('discordUser');}
+                }
+            }
+
+            const urlParamsOriginal = new URLSearchParams(window.location.search);
+            const produtoSelecionadoUrl = discordUserInfo?.state_produto || urlParamsOriginal.get('produto');
+
+            if (discordUserInfo && discordUserInfo.id) {
+                // Usuário está "logado"
+                configurarUIAposLogin(true, produtoSelecionadoUrl);
+            } else {
+                // Usuário não está logado, inicia o fluxo OAuth2
+                // Pega o produto da URL inicial, se houver, para enviar no state
+                const produtoParaState = urlParamsOriginal.get('produto') || '';
+                window.location.href = `http://localhost:3001/auth/discord?state_produto=${encodeURIComponent(produtoParaState)}`;
+            }
         };
     </script>
 </body>
