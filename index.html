@@ -7,25 +7,25 @@
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
     <style>
         body {
-            background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO');
+            background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO'); 
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #e0e0e0;
             margin: 0;
-            padding: 15px; /* Reduzido padding do body */
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: calc(100vh - 30px);
-            line-height: 1.5; /* Ligeiramente reduzido */
+            min-height: calc(100vh - 30px); 
+            line-height: 1.5; 
         }
         .container {
-            width: 98%; /* Aumentado para usar mais espaço da tela */
+            width: 98%; 
             max-width: 1350px;
             background-color: rgba(20, 20, 25, 0.93);
-            padding: 20px; /* Reduzido padding interno */
+            padding: 20px; 
             border-radius: 15px;
             border: 1px solid #4a4a52;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
@@ -55,31 +55,30 @@
         .visivel { display: block; }
 
         .conteudo-principal-pedido {
-            flex: 2.5; /* Ajustado para dar um pouco mais de espaço */
+            flex: 2.5; 
             min-width: 300px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
         .barra-lateral-pedido {
-            flex: 1; /* Barra lateral relativamente menor */
+            flex: 1; 
             min-width: 260px;
         }
         .bloco-interno {
             background-color: rgba(50, 50, 55, 0.85);
-            padding: 18px; /* Padding interno dos blocos reduzido */
+            padding: 18px; 
             border: 1px solid #5f5f67;
             border-radius: 8px;
             box-sizing: border-box;
         }
         
-        /* ESTILOS PARA PACOTES TOPUP TODOS JUNTOS */
         .painel-interno-topup {
-            display: grid; /* Usando grid para melhor controle de colunas */
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Colunas responsivas */
-            gap: 18px; /* Espaço entre os itens de pacote */
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 18px; 
         }
-        .item-pacote-topup { /* Cada pacote individual */
+        .item-pacote-topup {
              background-color: rgba(60,60,65,0.75);
              padding:15px;
              border-radius: 8px;
@@ -117,9 +116,13 @@
 
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
+        
         #user-info { background-color: rgba(0,0,0,0.35) !important; border: 1px solid #5865f2; }
-        #user-info img { vertical-align: middle; margin-right: 10px; width: 60px; height: 60px; border-radius: 50%;}
+        #user-info img { vertical-align: middle; margin-right: 12px; width: 60px; height: 60px; border-radius: 50%;}
         #user-info p { font-size: 1.15em; margin-top: 5px;}
+        /* Nova classe para a instrução */
+        .instrucao-pedido { font-size: 0.95em; color: #b0b8d0; margin-top: 8px !important; }
+
         #mensagem-status-final { font-weight: bold; margin-top:15px !important; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.95em; }
         #mensagem-status-final.success { background-color: rgba(87, 242, 135, 0.25); color: #57F287; border: 1px solid #57F287;}
         #mensagem-status-final.error { background-color: rgba(237, 66, 69, 0.25); color: #ED4245; border: 1px solid #ED4245;}
@@ -135,6 +138,7 @@
         <div id="user-info" style="text-align: center; margin-bottom: 25px; display: none; padding: 15px; border-radius: 10px;">
             <img id="user-avatar" src="" alt="Avatar">
             <p>Olá, <span id="user-name" style="font-weight: bold;"></span>!</p>
+            <p class="instrucao-pedido">Preencha os detalhes do seu pedido abaixo e clique em "Confirmar" para criar seu ticket no Discord.</p>
         </div>
 
         <div id="login-discord-section" style="text-align: center; margin-bottom: 25px;">
@@ -169,7 +173,6 @@
                         <h3>Taxas Gold (por 1k)</h3>
                         <p>Até 10.000 Gold: R$<span id="goldRateBaseDisplay">0.00</span></p>
                         <p>Acima de 10.000 Gold: R$<span id="goldRate10kDisplay">0.00</span></p>
-                        <p>Acima de 20.000 Gold: R$<span id="goldRate20kDisplay">0.00</span></p>
                         <p>Valor em USDT: $<span id="goldRateDolarDisplay">0.00</span></p>
                         <p style="margin-top:10px;"><small id="info-taxa-jogo-gold"></small></p>
                     </div>
@@ -219,8 +222,15 @@
 
     <script>
         const PRECOS_TOPUP_USD_DESCONTO = { 1: 0.90, 3: 2.62, 5: 4.15, 10: 7.40, 30: 21.80, 50: 37.00, 100: 73.50 };
-        const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100]; // Todos os pacotes
-        const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, rate20k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 };
+        const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
+        // Ajuste nas TAXAS_GOLD para refletir a remoção da faixa de 20k como diferente da de 10k
+        const TAXAS_GOLD = { 
+            base: 29.00,    // Até 10.000 Gold (ou seja, < 10000)
+            rate10k: 28.00, // 10.000 Gold ou mais
+            // rate20k: 28.00, // Removida, pois será coberta pela lógica de rate10k
+            dollar: 4.80,
+            gameTaxCoverage: 5.3 
+        };
 
         let cotacaoDolarAtual = 5.05; 
         let pedidoAtual = { tipo: null, itens: {}, infoConta: {}, totalBRL: 0, totalUSD: 0 };
@@ -237,7 +247,6 @@
         const btnEnviarDiscord = document.getElementById('btn-enviar-discord');
         const msgStatusFinal = document.getElementById('mensagem-status-final');
 
-        // Atualiza o texto da taxa do jogo dinamicamente
         document.getElementById('info-taxa-jogo-gold').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
 
         function mostrarSecaoPrincipal(idSecaoProduto) {
@@ -254,7 +263,8 @@
          function mostrarSecaoEscolhaOuLogin() {
             if (discordUserInfo) {
                 loginDiscordSection.style.display = 'none';
-                userInfoDisplay.style.display = 'block';
+                userInfoDisplay.style.display = 'block'; // Mostra info do usuário
+                // A instrução já está no HTML dentro de #user-info, então ela aparecerá com o restante
                 secaoEscolhaProduto.classList.add('visivel');
             } else {
                 loginDiscordSection.style.display = 'block';
@@ -289,13 +299,13 @@
 
         function gerarPainelTopUp() {
             const container = document.getElementById('painel-interno-topup');
-            container.innerHTML = ''; // Limpa pacotes existentes
+            container.innerHTML = ''; 
 
             PACOTES_TOPUP_DISPONIVEIS.forEach(valorPacote => {
                 const precoDesconto = PRECOS_TOPUP_USD_DESCONTO[valorPacote];
                 
                 const divItemPacote = document.createElement('div');
-                divItemPacote.className = 'item-pacote-topup'; // Classe para cada item de pacote
+                divItemPacote.className = 'item-pacote-topup';
 
                 const label = document.createElement('label');
                 label.htmlFor = `topup-${valorPacote}`;
@@ -313,7 +323,7 @@
                     calcularTotalTopUp(); 
                 };
                 divItemPacote.appendChild(input);
-                container.appendChild(divItemPacote); // Adiciona direto ao container principal de pacotes
+                container.appendChild(divItemPacote);
             });
         }
 
@@ -336,7 +346,7 @@
         function popularTaxasGoldDisplay() {
             document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
             document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
-            document.getElementById('goldRate20kDisplay').textContent = TAXAS_GOLD.rate20k.toFixed(2);
+            // Removido o display para rate20kDisplay pois não existe mais como taxa separada
             document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
         }
 
@@ -348,13 +358,13 @@
             const quantidade = parseInt(quantidadeInput.value) || 0;
             const servidor = servidorInput.value;
             pedidoAtual.itens = { quantidade: quantidade, servidor: servidor };
-            let taxaAplicadaR = TAXAS_GOLD.base;
-            if (quantidade >= 20000) { // 20.000 ou mais usa rate20k
-                taxaAplicadaR = TAXAS_GOLD.rate20k;
-            } else if (quantidade >= 10000) { // De 10.000 a 19.999 usa rate10k
+            
+            let taxaAplicadaR;
+            if (quantidade >= 10000) { // 10.000 Gold ou mais
                 taxaAplicadaR = TAXAS_GOLD.rate10k;
+            } else { // Abaixo de 10.000 Gold
+                taxaAplicadaR = TAXAS_GOLD.base;
             }
-            // Abaixo de 10.000 usa TAXAS_GOLD.base (já definido)
 
             const totalBRL = (quantidade / 1000) * taxaAplicadaR;
             const totalUSD = (quantidade / 1000) * TAXAS_GOLD.dollar;
@@ -467,7 +477,8 @@
             discordUserInfo = { id: SEU_ID_DE_TESTE_FIXO, username: "Daoshi Cliente Web", avatar: "https://cdn.discordapp.com/embed/avatars/1.png" };
             document.getElementById('user-name').textContent = discordUserInfo.username;
             document.getElementById('user-avatar').src = discordUserInfo.avatar;
-            userInfoDisplay.style.display = 'block';
+            // A instrução já está no HTML e será exibida junto com user-info
+            userInfoDisplay.style.display = 'block'; 
             loginDiscordSection.style.display = 'none';
             secaoEscolhaProduto.classList.remove('visivel');
 
