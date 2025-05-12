@@ -7,37 +7,36 @@
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
     <style>
         body {
-            /* Imagem de fundo conforme solicitado */
-            background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO'); 
+            background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #e0e0e0;
             margin: 0;
-            padding: 20px;
+            padding: 15px; /* Reduzido padding do body */
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: calc(100vh - 40px); 
-            line-height: 1.6;
+            min-height: calc(100vh - 30px);
+            line-height: 1.5; /* Ligeiramente reduzido */
         }
         .container {
-            width: 95%;
-            max-width: 1300px;
-            background-color: rgba(20, 20, 25, 0.92);
-            padding: 30px;
-            border-radius: 18px;
+            width: 98%; /* Aumentado para usar mais espaço da tela */
+            max-width: 1350px;
+            background-color: rgba(20, 20, 25, 0.93);
+            padding: 20px; /* Reduzido padding interno */
+            border-radius: 15px;
             border: 1px solid #4a4a52;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            margin-bottom: 15px;
         }
         .secao-escolha, .secao-finalizar {
             display: none; 
-            margin-bottom: 30px;
-            padding: 25px;
-            background-color: rgba(40,40,45,0.7);
-            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: rgba(40,40,45,0.75);
+            border-radius: 10px;
             border: 1px solid #505058;
         }
         .secao-gold, .secao-topup {
@@ -46,85 +45,87 @@
         .secao-gold.visivel, .secao-topup.visivel {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px; 
-            margin-bottom: 30px;
-            padding: 25px;
-            background-color: rgba(40,40,45,0.7);
-            border-radius: 12px;
+            gap: 20px; 
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: rgba(40,40,45,0.75);
+            border-radius: 10px;
             border: 1px solid #505058;
         }
         .visivel { display: block; }
 
         .conteudo-principal-pedido {
-            flex: 3; 
-            min-width: 320px;
+            flex: 2.5; /* Ajustado para dar um pouco mais de espaço */
+            min-width: 300px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
         .barra-lateral-pedido {
-            flex: 1.5; 
-            min-width: 280px;
+            flex: 1; /* Barra lateral relativamente menor */
+            min-width: 260px;
         }
         .bloco-interno {
-            background-color: rgba(50, 50, 55, 0.8);
-            padding: 20px;
+            background-color: rgba(50, 50, 55, 0.85);
+            padding: 18px; /* Padding interno dos blocos reduzido */
             border: 1px solid #5f5f67;
-            border-radius: 10px;
+            border-radius: 8px;
             box-sizing: border-box;
         }
+        
+        /* ESTILOS PARA PACOTES TOPUP TODOS JUNTOS */
         .painel-interno-topup {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid; /* Usando grid para melhor controle de colunas */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Colunas responsivas */
+            gap: 18px; /* Espaço entre os itens de pacote */
         }
-        .sub-bloco-pacotes-topup {
-             background-color: rgba(60,60,65,0.7);
-             padding:18px;
+        .item-pacote-topup { /* Cada pacote individual */
+             background-color: rgba(60,60,65,0.75);
+             padding:15px;
              border-radius: 8px;
+             border: 1px solid #555;
         }
 
-        h1 { font-size: 2.2em; text-align: center; color: #fff; margin-top: 0; margin-bottom: 25px; text-shadow: 0 0 10px rgba(120, 120, 255, 0.5); }
-        h2 { font-size: 1.8em; text-align: center; color: #efeff1; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #5865f2; padding-bottom: 10px;}
-        h3 { font-size: 1.4em; color: #7289da; margin-top: 0; margin-bottom: 18px; text-align: left;}
+        h1 { font-size: 2em; text-align: center; color: #fff; margin-top: 0; margin-bottom: 20px; text-shadow: 0 0 8px rgba(120, 120, 255, 0.4); }
+        h2 { font-size: 1.6em; text-align: center; color: #efeff1; margin-top: 0; margin-bottom: 18px; border-bottom: 1px solid #5865f2; padding-bottom: 8px;}
+        h3 { font-size: 1.25em; color: #7289da; margin-top: 0; margin-bottom: 15px; text-align: left;}
         
-        input[type="number"], input[type="text"], input[type="password"] { /* Incluindo type="password" para estilo, mas mudaremos para text no campo de senha */
-            width: calc(100% - 26px); padding: 12px; margin-bottom: 20px; margin-top: 5px;
-            background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 6px;
-            font-size: 1em;
+        input[type="number"], input[type="text"], input[type="password"] {
+            width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; margin-top: 4px;
+            background-color: #2c2f33; color: #e0e0e0; border: 1px solid #5c5e62; border-radius: 5px;
+            font-size: 0.95em;
         }
-        label { font-weight: bold; display: block; color: #b0b0b8; margin-bottom: 6px; font-size: 0.95em }
-        p { color: #c0c0c8; margin: 0.8em 0; }
+        label { font-weight: bold; display: block; color: #b0b0b8; margin-bottom: 4px; font-size: 0.9em }
+        p { color: #c0c0c8; margin: 0.6em 0; font-size: 0.95em; }
         
         button {
-            padding: 14px 28px; background-color: #C62828; 
-            color: white; border: none; border-radius: 6px; cursor: pointer; 
-            font-size: 1.15em; font-weight: bold;
+            padding: 12px 24px; background-color: #C62828; 
+            color: white; border: none; border-radius: 5px; cursor: pointer; 
+            font-size: 1.05em; font-weight: bold;
             transition: background-color 0.2s ease, transform 0.1s ease; 
-            margin-right: 12px; margin-top: 15px;
+            margin-right: 10px; margin-top: 12px;
         }
         button:hover { background-color: #A92222; transform: translateY(-1px); }
         button:active { transform: translateY(0px); }
         button:disabled { background-color: #4f4f53; color: #888; cursor: not-allowed;}
-        .btn-escolha { background-color: #5865f2; width: calc(50% - 15px); margin-bottom: 10px;}
+        .btn-escolha { background-color: #5865f2; width: calc(50% - 12px); margin-bottom: 8px;}
         .btn-escolha:hover { background-color: #4752c4; }
 
-        #cotacao { position: fixed; bottom: 12px; right: 18px; font-size: 0.9em; color: #ccc; background-color: rgba(0,0,0,0.75); padding: 6px 10px; border-radius: 4px; z-index: 1000; box-shadow: 0 0 8px rgba(0,0,0,0.5);}
-        #total-geral-display, #total-dolar-geral-display { font-size: 1.4em; font-weight: bold; color: #57F287; }
-        #resumo-itens-selecionados-final { background-color: rgba(0,0,0,0.45); padding: 18px; border-radius: 10px; margin-top:18px; white-space: pre-wrap; border: 1px solid #4a4a52;}
+        #cotacao { position: fixed; bottom: 8px; right: 12px; font-size: 0.85em; color: #ccc; background-color: rgba(0,0,0,0.8); padding: 5px 8px; border-radius: 4px; z-index: 1000; box-shadow: 0 0 6px rgba(0,0,0,0.4);}
+        #total-geral-display, #total-dolar-geral-display { font-size: 1.3em; font-weight: bold; color: #57F287; }
+        #resumo-itens-selecionados-final { background-color: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; margin-top:15px; white-space: pre-wrap; border: 1px solid #4a4a52;}
 
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input[type="number"] { -moz-appearance: textfield; }
-        #user-info { background-color: rgba(0,0,0,0.3) !important; border: 1px solid #5865f2; }
-        #user-info img { vertical-align: middle; margin-right: 12px; }
-        #mensagem-status-final { font-weight: bold; margin-top:18px !important; padding: 10px; border-radius: 6px; text-align: center; }
-        #mensagem-status-final.success { background-color: rgba(87, 242, 135, 0.2); color: #57F287; border: 1px solid #57F287;}
-        #mensagem-status-final.error { background-color: rgba(237, 66, 69, 0.2); color: #ED4245; border: 1px solid #ED4245;}
-        #mensagem-status-final.processing { background-color: rgba(250, 166, 26, 0.2); color: #FAA61A; border: 1px solid #FAA61A;}
+        #user-info { background-color: rgba(0,0,0,0.35) !important; border: 1px solid #5865f2; }
+        #user-info img { vertical-align: middle; margin-right: 10px; width: 60px; height: 60px; border-radius: 50%;}
+        #user-info p { font-size: 1.15em; margin-top: 5px;}
+        #mensagem-status-final { font-weight: bold; margin-top:15px !important; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.95em; }
+        #mensagem-status-final.success { background-color: rgba(87, 242, 135, 0.25); color: #57F287; border: 1px solid #57F287;}
+        #mensagem-status-final.error { background-color: rgba(237, 66, 69, 0.25); color: #ED4245; border: 1px solid #ED4245;}
+        #mensagem-status-final.processing { background-color: rgba(250, 166, 26, 0.25); color: #FAA61A; border: 1px solid #FAA61A;}
         #mensagem-status-final a {color: #7289DA; text-decoration: none;}
         #mensagem-status-final a:hover {text-decoration: underline;}
-
-        .item-pacote-input div { margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -132,8 +133,8 @@
     <div class="container" id="container-principal">
         <h1>Loja Daoshi Gold & Top-Up</h1>
         <div id="user-info" style="text-align: center; margin-bottom: 25px; display: none; padding: 15px; border-radius: 10px;">
-            <img id="user-avatar" src="" alt="Avatar" style="width: 70px; height: 70px; border-radius: 50%;">
-            <p style="font-size: 1.25em; margin-top: 8px;">Olá, <span id="user-name" style="font-weight: bold;"></span>!</p>
+            <img id="user-avatar" src="" alt="Avatar">
+            <p>Olá, <span id="user-name" style="font-weight: bold;"></span>!</p>
         </div>
 
         <div id="login-discord-section" style="text-align: center; margin-bottom: 25px;">
@@ -170,7 +171,7 @@
                         <p>Acima de 10.000 Gold: R$<span id="goldRate10kDisplay">0.00</span></p>
                         <p>Acima de 20.000 Gold: R$<span id="goldRate20kDisplay">0.00</span></p>
                         <p>Valor em USDT: $<span id="goldRateDolarDisplay">0.00</span></p>
-                        <p style="margin-top:10px;"><small>A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.</small></p>
+                        <p style="margin-top:10px;"><small id="info-taxa-jogo-gold"></small></p>
                     </div>
                 </div>
             </div>
@@ -218,7 +219,7 @@
 
     <script>
         const PRECOS_TOPUP_USD_DESCONTO = { 1: 0.90, 3: 2.62, 5: 4.15, 10: 7.40, 30: 21.80, 50: 37.00, 100: 73.50 };
-        const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
+        const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100]; // Todos os pacotes
         const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, rate20k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 };
 
         let cotacaoDolarAtual = 5.05; 
@@ -237,8 +238,7 @@
         const msgStatusFinal = document.getElementById('mensagem-status-final');
 
         // Atualiza o texto da taxa do jogo dinamicamente
-        document.querySelector('.bloco-gold-taxas small').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
-
+        document.getElementById('info-taxa-jogo-gold').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
 
         function mostrarSecaoPrincipal(idSecaoProduto) {
             [secaoGold, secaoTopUp].forEach(sec => sec.classList.remove('visivel'));
@@ -289,40 +289,31 @@
 
         function gerarPainelTopUp() {
             const container = document.getElementById('painel-interno-topup');
-            container.innerHTML = '';
-            const gruposVisuaisPacotes = [
-                { titulo: "Pacotes de $1, $3 e $5", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p <= 5) },
-                { titulo: "Pacotes de $10 e $30", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p > 5 && p <= 30) },
-                { titulo: "Pacotes de $50 e $100", valores: PACOTES_TOPUP_DISPONIVEIS.filter(p => p > 30) }
-            ];
+            container.innerHTML = ''; // Limpa pacotes existentes
 
-            gruposVisuaisPacotes.forEach(grupoInfo => {
-                if (grupoInfo.valores.length === 0) return;
-                const divBlocoPacote = document.createElement('div');
-                divBlocoPacote.className = 'sub-bloco-pacotes-topup';
-                const tituloH3 = document.createElement('h3');
-                tituloH3.textContent = grupoInfo.titulo;
-                divBlocoPacote.appendChild(tituloH3);
-                grupoInfo.valores.forEach(valorPacote => {
-                    const precoDesconto = PRECOS_TOPUP_USD_DESCONTO[valorPacote];
-                    const divItemPacote = document.createElement('div');
-                    divItemPacote.className = 'item-pacote-input';
-                    const label = document.createElement('label');
-                    label.htmlFor = `topup-${valorPacote}`;
-                    label.textContent = `Pacote $${valorPacote} (Preço: $${precoDesconto.toFixed(2)}):`;
-                    divItemPacote.appendChild(label);
-                    const input = document.createElement('input');
-                    input.type = 'number'; input.id = `topup-${valorPacote}`;
-                    input.value = pedidoAtual.itens[valorPacote] || 0; input.min = 0;
-                    input.dataset.valor = valorPacote;
-                    input.oninput = () => { 
-                        pedidoAtual.itens[valorPacote] = parseInt(input.value) || 0;
-                        calcularTotalTopUp(); 
-                    };
-                    divItemPacote.appendChild(input);
-                    divBlocoPacote.appendChild(divItemPacote);
-                });
-                container.appendChild(divBlocoPacote);
+            PACOTES_TOPUP_DISPONIVEIS.forEach(valorPacote => {
+                const precoDesconto = PRECOS_TOPUP_USD_DESCONTO[valorPacote];
+                
+                const divItemPacote = document.createElement('div');
+                divItemPacote.className = 'item-pacote-topup'; // Classe para cada item de pacote
+
+                const label = document.createElement('label');
+                label.htmlFor = `topup-${valorPacote}`;
+                label.textContent = `Pacote $${valorPacote} (Preço: $${precoDesconto.toFixed(2)}):`;
+                divItemPacote.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'number'; 
+                input.id = `topup-${valorPacote}`;
+                input.value = pedidoAtual.itens[valorPacote] || 0; 
+                input.min = 0;
+                input.dataset.valor = valorPacote;
+                input.oninput = () => { 
+                    pedidoAtual.itens[valorPacote] = parseInt(input.value) || 0;
+                    calcularTotalTopUp(); 
+                };
+                divItemPacote.appendChild(input);
+                container.appendChild(divItemPacote); // Adiciona direto ao container principal de pacotes
             });
         }
 
@@ -344,7 +335,7 @@
 
         function popularTaxasGoldDisplay() {
             document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
-            document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2); // Corrigido de rate20k para rate10k
+            document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
             document.getElementById('goldRate20kDisplay').textContent = TAXAS_GOLD.rate20k.toFixed(2);
             document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
         }
@@ -358,13 +349,12 @@
             const servidor = servidorInput.value;
             pedidoAtual.itens = { quantidade: quantidade, servidor: servidor };
             let taxaAplicadaR = TAXAS_GOLD.base;
-            // Ajuste na lógica de seleção de taxa do Gold
-            if (quantidade >= 20000) {
+            if (quantidade >= 20000) { // 20.000 ou mais usa rate20k
                 taxaAplicadaR = TAXAS_GOLD.rate20k;
-            } else if (quantidade >= 10000) { // Antes era apenas acima de 10k
+            } else if (quantidade >= 10000) { // De 10.000 a 19.999 usa rate10k
                 taxaAplicadaR = TAXAS_GOLD.rate10k;
             }
-            // Se quantidade < 10000, usa TAXAS_GOLD.base (já definido)
+            // Abaixo de 10.000 usa TAXAS_GOLD.base (já definido)
 
             const totalBRL = (quantidade / 1000) * taxaAplicadaR;
             const totalUSD = (quantidade / 1000) * TAXAS_GOLD.dollar;
@@ -499,7 +489,7 @@
             document.getElementById('quantidadeOuro').value = 0; 
             document.getElementById('servidorGold').value = '';
             popularTaxasGoldDisplay(); 
-            calcularTotalGold(); // Chama para zerar/atualizar displays
+            calcularTotalGold();
         };
         document.getElementById('btn-escolher-topup').onclick = () => {
             pedidoAtual.tipo = 'topup'; pedidoAtual.itens = {};
@@ -508,7 +498,7 @@
             });
             gerarPainelTopUp(); 
             mostrarSecaoPrincipal('secao-topup'); 
-            calcularTotalTopUp(); // Chama para zerar/atualizar displays
+            calcularTotalTopUp();
         };
         document.getElementById('btn-enviar-discord').onclick = finalizarPedido;
         
@@ -527,7 +517,6 @@
             await buscarCotacaoDolar(); 
             mostrarSecaoEscolhaOuLogin();
             btnEnviarDiscord.disabled = true;
-            // Inicializa o display das taxas de gold
             popularTaxasGoldDisplay(); 
         };
     </script>
