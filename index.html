@@ -6,8 +6,6 @@
     <title>Loja Daoshi - Pedidos</title>
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
     <style>
-        /* Seus estilos CSS (da resposta anterior) permanecem os mesmos. Cole-os aqui. */
-        /* Para economizar espaço, não vou repetir todo o CSS aqui, mas use o da resposta anterior */
         body {
             background-image: url('https://lh3.googleusercontent.com/d/13mcKYGZFBEVkIJ2FBCzm1tDKyEXBnuuO'); 
             background-size: cover; background-repeat: no-repeat; background-attachment: fixed;
@@ -20,9 +18,9 @@
             padding: 20px; border-radius: 15px; border: 1px solid #4a4a52;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6); margin-bottom: 15px;
         }
-        .secao-escolha, .secao-finalizar, .secao-loading { /* Adicionada secao-loading */
+        .secao-loading, .secao-escolha, .secao-finalizar { /* secao-loading é visível por padrão inicialmente */
             display: none; margin-bottom: 20px; padding: 20px;
-            background-color: rgba(40,40,45,0.75); border-radius: 10px; border: 1px solid #505058;
+            background-color: rgba(40,40,45,0.75); border-radius: 10px; border: 1px solid #505058; text-align:center;
         }
         .secao-gold, .secao-topup { display: none; }
         .secao-gold.visivel, .secao-topup.visivel {
@@ -70,8 +68,7 @@
     <div class="container" id="container-principal">
         <h1>Loja Daoshi Gold & Top-Up</h1>
         
-        <div id="secao-loading" class="visivel" style="text-align: center; padding: 30px;">
-            <p id="loading-message">Conectando com o Discord e carregando seu perfil...</p>
+        <div id="secao-loading" class="visivel"> <p id="loading-message">Conectando com o Discord e carregando seu perfil...</p>
             </div>
 
         <div id="user-info" style="text-align: center; margin-bottom: 25px; display: none; padding: 15px; border-radius: 10px;">
@@ -80,9 +77,8 @@
             <p class="instrucao-pedido">Preencha os detalhes do seu pedido abaixo e clique em "Confirmar" para criar seu ticket no Discord.</p>
         </div>
 
-        <div id="secao-escolha-produto" class="secao-escolha">
-            <h2>O que você deseja hoje?</h2>
-            <p>Não conseguimos identificar seu pedido inicial. Por favor, escolha uma opção:</p>
+        <div id="secao-escolha-produto" class="secao-escolha"> <h2>O que você deseja hoje?</h2>
+            <p id="escolha-produto-mensagem">Não conseguimos identificar seu pedido inicial ou houve um problema na autenticação. Por favor, escolha uma opção ou tente recarregar a página vindo do Discord.</p>
             <div style="text-align: center;">
                 <button id="btn-escolher-gold" class="btn-escolha">💰 Comprar Gold</button>
                 <button id="btn-escolher-topup" class="btn-escolha">✨ Fazer Top-Up</button>
@@ -117,7 +113,8 @@
                  <div class="conteudo-principal-pedido">
                     <div class="bloco-interno">
                         <h3>✨ Fazer Top-Up ✨</h3>
-                        <div class="painel-interno-topup" id="painel-interno-topup"></div>
+                        <div class="painel-interno-topup" id="painel-interno-topup">
+                            </div>
                     </div>
                 </div>
                 <div class="barra-lateral-pedido">
@@ -153,30 +150,28 @@
     <div id="cotacao" title="Cotação USDT/BRL da Binance API">Carregando cotação...</div>
 
     <script>
-        // --- Suas constantes PRECOS_TOPUP_USD_DESCONTO, PACOTES_TOPUP_DISPONIVEIS, TAXAS_GOLD ---
         const PRECOS_TOPUP_USD_DESCONTO = { 1: 0.90, 3: 2.62, 5: 4.15, 10: 7.40, 30: 21.80, 50: 37.00, 100: 73.50 };
         const PACOTES_TOPUP_DISPONIVEIS = [1, 3, 5, 10, 30, 50, 100];
-        const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 }; // Simplificado para duas faixas
+        const TAXAS_GOLD = { base: 29.00, rate10k: 28.00, dollar: 4.80, gameTaxCoverage: 5.3 };
 
         let cotacaoDolarAtual = 5.05; 
         let pedidoAtual = { tipo: null, itens: {}, infoConta: {}, totalBRL: 0, totalUSD: 0 };
-        let discordUserInfo = null;
+        let discordUserInfo = null; // Não precisa mais do SEU_ID_DE_TESTE_FIXO aqui
 
-        // --- Referências aos Elementos do DOM ---
         const secaoLoading = document.getElementById('secao-loading');
         const secaoEscolhaProduto = document.getElementById('secao-escolha-produto');
         const secaoGold = document.getElementById('secao-gold');
         const secaoTopUp = document.getElementById('secao-topup');
         const secaoFinalizarPedido = document.getElementById('secao-finalizar-pedido');
         const userInfoDisplay = document.getElementById('user-info');
-        // Removido loginDiscordSection pois não haverá mais botão de login explícito no site
         const conteudoPedidoWrapper = document.getElementById('conteudo-pedido-wrapper');
         const btnEnviarDiscord = document.getElementById('btn-enviar-discord');
         const msgStatusFinal = document.getElementById('mensagem-status-final');
+        const loadingMessageEl = document.getElementById('loading-message');
         
         document.getElementById('info-taxa-jogo-gold').textContent = `A taxa do jogo (${TAXAS_GOLD.gameTaxCoverage}%) já está coberta no valor que você precisará anunciar para receber a quantidade comprada integralmente.`;
 
-        function mostrarSecaoPrincipal(idSecaoProduto) {
+        function mostrarSecaoPrincipal(idSecaoProduto) { /* ... (igual à resposta anterior) ... */
             [secaoGold, secaoTopUp].forEach(sec => sec.classList.remove('visivel'));
             if (idSecaoProduto) {
                 document.getElementById(idSecaoProduto).classList.add('visivel');
@@ -187,42 +182,35 @@
                 secaoFinalizarPedido.classList.remove('visivel');
             }
         }
-        // Esta função não é mais para mostrar/esconder o botão de login,
-        // mas para configurar a UI após o login (real ou falha).
+
         function configurarUIAposLogin(isLoggedIn, produtoParaProcessar = null) {
-            secaoLoading.classList.remove('visivel'); // Esconde o loading
+            console.log(`[configurarUIAposLogin] isLoggedIn: ${isLoggedIn}, produtoParaProcessar: ${produtoParaProcessar}`);
+            secaoLoading.classList.remove('visivel'); 
 
             if (isLoggedIn && discordUserInfo) {
-                userInfoDisplay.style.display = 'block'; // Mostra info do usuário
-                // A instrução já está no HTML dentro de #user-info
+                userInfoDisplay.style.display = 'block'; 
+                document.getElementById('user-name').textContent = discordUserInfo.username;
+                document.getElementById('user-avatar').src = discordUserInfo.avatar;
                 
-                // Agora, processa o produto
                 if (produtoParaProcessar === 'gold') {
                     document.getElementById('btn-escolher-gold').onclick();
                 } else if (produtoParaProcessar === 'topup') {
                     document.getElementById('btn-escolher-topup').onclick();
                 } else {
-                    // Se nenhum produto ou produto inválido, mostra a escolha
-                    console.warn("Produto não especificado ou inválido após login, mostrando escolha.");
                     secaoEscolhaProduto.classList.add('visivel');
+                    document.getElementById('escolha-produto-mensagem').textContent = 'Login com Discord realizado! Agora, por favor, escolha o que deseja comprar.';
                     mostrarSecaoPrincipal(null);
                 }
             } else {
-                // Falha no login ou usuário não autenticado
                 userInfoDisplay.style.display = 'none';
-                secaoEscolhaProduto.classList.remove('visivel'); // Não mostra escolha se o login falhou
+                secaoEscolhaProduto.classList.remove('visivel'); 
                 mostrarSecaoPrincipal(null); 
-                document.getElementById('loading-message').textContent = 'Falha ao conectar com o Discord. Por favor, tente recarregar a página ou verifique se você autorizou o aplicativo no Discord.';
-                secaoLoading.classList.add('visivel'); // Mostra a mensagem de erro no lugar do loading
+                loadingMessageEl.textContent = 'Falha ao conectar com o Discord. Tente recarregar a página a partir do link no Discord. Se o problema persistir, verifique se autorizou o aplicativo.';
+                secaoLoading.classList.add('visivel'); 
             }
         }
 
-        // --- Suas funções buscarCotacaoDolar, recalcularTotaisAtuais, gerarPainelTopUp, 
-        // calcularTotalTopUp, popularTaxasGoldDisplay, calcularTotalGold, 
-        // atualizarDisplayFinalizarPedido, finalizarPedido permanecem as mesmas da resposta anterior ---
-        // Cole-as aqui. Para economizar espaço, não vou repetir todas.
-        // Apenas certifique-se que `calcularTotalGold` use a lógica de taxa simplificada.
-        async function buscarCotacaoDolar() {
+        async function buscarCotacaoDolar() { /* ... (igual à resposta anterior) ... */
             const cotacaoDisplay = document.getElementById('cotacao');
             cotacaoDisplay.innerText = 'Buscando cotação...';
             try {
@@ -238,12 +226,12 @@
                 recalcularTotaisAtuais(); 
             }
         }
-        function recalcularTotaisAtuais(){
+        function recalcularTotaisAtuais(){ /* ... (igual à resposta anterior) ... */
             if (pedidoAtual.tipo === 'topup') calcularTotalTopUp();
             else if (pedidoAtual.tipo === 'gold') calcularTotalGold();
             else atualizarDisplayFinalizarPedido(); 
         }
-        function gerarPainelTopUp() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */ 
+        function gerarPainelTopUp() { /* ... (igual à resposta anterior, com pacotes juntos) ... */
             const container = document.getElementById('painel-interno-topup');
             container.innerHTML = ''; 
             PACOTES_TOPUP_DISPONIVEIS.forEach(valorPacote => {
@@ -263,7 +251,7 @@
                 container.appendChild(divItemPacote);
             });
         }
-        function calcularTotalTopUp() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
+        function calcularTotalTopUp() { /* ... (igual à resposta anterior) ... */
             let totalUSDDesconto = 0;
             if(pedidoAtual.itens){ 
                 Object.keys(pedidoAtual.itens).forEach(valorPacoteKey => {
@@ -278,13 +266,12 @@
             pedidoAtual.totalBRL = totalUSDDesconto * cotacaoDolarAtual;
             atualizarDisplayFinalizarPedido();
         }
-        function popularTaxasGoldDisplay() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR, ATUALIZADA ABAIXO... */
+        function popularTaxasGoldDisplay() { /* ... (igual à resposta anterior, com taxa de 20k removida) ... */
             document.getElementById('goldRateBaseDisplay').textContent = TAXAS_GOLD.base.toFixed(2);
             document.getElementById('goldRate10kDisplay').textContent = TAXAS_GOLD.rate10k.toFixed(2);
-            // Removida a linha para goldRate20kDisplay
             document.getElementById('goldRateDolarDisplay').textContent = TAXAS_GOLD.dollar.toFixed(2);
         }
-        function calcularTotalGold() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR, ATUALIZADA ABAIXO... */
+        function calcularTotalGold() { /* ... (igual à resposta anterior, com lógica de taxa de 20k removida) ... */
             const quantidadeInput = document.getElementById('quantidadeOuro');
             const servidorInput = document.getElementById('servidorGold');
             if (!quantidadeInput || !servidorInput) return; 
@@ -304,7 +291,7 @@
             pedidoAtual.totalUSD = totalUSD;
             atualizarDisplayFinalizarPedido();
         }
-        function atualizarDisplayFinalizarPedido() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
+        function atualizarDisplayFinalizarPedido() { /* ... (igual à resposta anterior) ... */
             const tipoPedidoDisplay = document.getElementById('tipo-pedido-display');
             const resumoItensDiv = document.getElementById('resumo-itens-selecionados-final');
             tipoPedidoDisplay.textContent = pedidoAtual.tipo === 'gold' ? 'Compra de Gold' : (pedidoAtual.tipo === 'topup' ? 'Pedido de Top-Up' : 'Nenhum');
@@ -333,7 +320,7 @@
             document.getElementById('total-dolar-geral-display').textContent = `$ ${pedidoAtual.totalUSD.toFixed(2)}`;
             btnEnviarDiscord.disabled = !temAlgoNoPedido;
         }
-        async function finalizarPedido() { /* ...COLE SUA FUNÇÃO DA RESPOSTA ANTERIOR... */
+        async function finalizarPedido() { /* ... (igual à resposta anterior, mas usa discordUserInfo.id) ... */
             btnEnviarDiscord.disabled = true; msgStatusFinal.textContent = 'Processando seu pedido...'; msgStatusFinal.className = 'processing'; 
             if (pedidoAtual.tipo === 'topup') {
                 pedidoAtual.infoConta = {
@@ -342,8 +329,8 @@
                     metodoLogin: document.getElementById('metodoLoginConta').value, servidor: document.getElementById('servidorTopUp').value
                 };
             } else if (pedidoAtual.tipo === 'gold') { pedidoAtual.infoConta = { servidor: pedidoAtual.itens.servidor }; }
-            let discordUserId = (discordUserInfo && discordUserInfo.id) ? discordUserInfo.id : null; // Pega do OAuth2
-            if (!discordUserId) { msgStatusFinal.textContent = 'Erro: Usuário Discord não autenticado.'; msgStatusFinal.className = 'error'; btnEnviarDiscord.disabled = false; return; }
+            let discordUserId = (discordUserInfo && discordUserInfo.id) ? discordUserInfo.id : null; 
+            if (!discordUserId) { msgStatusFinal.textContent = 'Erro: Usuário Discord não autenticado. Por favor, recarregue a página a partir do link no Discord.'; msgStatusFinal.className = 'error'; btnEnviarDiscord.disabled = false; return; }
             const payload = {
                 userIdDiscord: discordUserId, tipoPedido: pedidoAtual.tipo, itensPedido: pedidoAtual.itens,
                 infoConta: pedidoAtual.infoConta, totalBRL: pedidoAtual.totalBRL.toFixed(2),
@@ -363,7 +350,7 @@
                 msgStatusFinal.textContent = 'Erro de comunicação. Verifique o console do navegador (F12) e do bot.'; msgStatusFinal.className = 'error';
             } finally { btnEnviarDiscord.disabled = false; }
         }
-
+        
         // --- Event Listeners para botões de escolha de produto ---
         document.getElementById('btn-escolher-gold').onclick = () => {
             pedidoAtual.tipo = 'gold'; pedidoAtual.itens = {quantidade: 0, servidor: ''};
@@ -393,47 +380,76 @@
 
         // --- Inicialização da Página e Lógica OAuth2 ---
         window.onload = async () => {
+            console.log("[window.onload] Página carregada. URL:", window.location.href);
+            secaoLoading.classList.add('visivel'); // Mostra loading inicialmente
+            // Esconde outras seções até o login ser processado
+            userInfoDisplay.style.display = 'none';
+            secaoEscolhaProduto.classList.remove('visivel');
+            mostrarSecaoPrincipal(null);
+
+
             await buscarCotacaoDolar(); 
             btnEnviarDiscord.disabled = true;
             popularTaxasGoldDisplay();
 
-            const fragmentParams = new URLSearchParams(window.location.hash.substring(1)); // Remove o '#'
-            const userDataFromFragment = {
-                discord_id: fragmentParams.get('discord_id'),
-                username: fragmentParams.get('username'),
-                avatar: fragmentParams.get('avatar'),
-                email: fragmentParams.get('email'),
-                state_produto: fragmentParams.get('state_produto') // Pega o produto do state
-            };
+            const fragmentParams = new URLSearchParams(window.location.hash.substring(1));
+            const discordIdFromFragment = fragmentParams.get('discord_id');
+            let produtoParaProcessar = fragmentParams.get('state_produto'); // Pega o produto que voltou no state
 
-            if (userDataFromFragment.discord_id) { // Veio do callback OAuth2
+            if (discordIdFromFragment) {
+                const userDataFromFragment = {
+                    id: discordIdFromFragment,
+                    username: fragmentParams.get('username'),
+                    avatar: fragmentParams.get('avatar'),
+                    email: fragmentParams.get('email')
+                };
+                console.log("[window.onload] Dados do usuário obtidos do fragmento (#callback):", userDataFromFragment);
                 localStorage.setItem('discordUser', JSON.stringify(userDataFromFragment));
-                // Limpa o fragmento e reconstrói a URL com o ?produto= se existir no state
-                let cleanUrl = window.location.pathname;
-                if (userDataFromFragment.state_produto) {
-                    cleanUrl += `?produto=${userDataFromFragment.state_produto}`;
+                discordUserInfo = userDataFromFragment;
+                
+                // Limpa o fragmento e mantém/adiciona o ?produto= se veio no state
+                let cleanUrl = window.location.pathname; 
+                if (produtoParaProcessar) { // Se o state_produto voltou
+                    cleanUrl += `?produto=${produtoParaProcessar}`;
+                } else { // Se não voltou state, mas havia ?produto= antes do login, tenta pegar
+                    const queryParamsOriginal = new URLSearchParams(window.location.search);
+                    const produtoQueryOriginal = queryParamsOriginal.get('produto');
+                    if (produtoQueryOriginal) {
+                        cleanUrl += `?produto=${produtoQueryOriginal}`;
+                        produtoParaProcessar = produtoQueryOriginal; // Define para uso abaixo
+                    }
                 }
+                console.log("[window.onload] Limpando fragmento. Nova URL (sem #):", cleanUrl);
                 window.history.replaceState(null, null, cleanUrl); 
-                discordUserInfo = userDataFromFragment; // Usa os dados frescos do callback
             } else {
-                // Tenta carregar do localStorage se não veio do callback (ex: refresh da página)
+                // Não veio do callback, tenta carregar do localStorage
                 const storedUser = localStorage.getItem('discordUser');
                 if (storedUser) {
-                    try { discordUserInfo = JSON.parse(storedUser); } catch (e) { localStorage.removeItem('discordUser');}
+                    try { 
+                        discordUserInfo = JSON.parse(storedUser); 
+                        console.log("[window.onload] Usuário carregado do localStorage:", discordUserInfo);
+                        // Se carregou do localStorage, pega o ?produto da URL atual (se houver)
+                        produtoParaProcessar = new URLSearchParams(window.location.search).get('produto');
+                    } catch (e) { 
+                        console.error("[window.onload] Erro ao parsear dados do localStorage:", e);
+                        localStorage.removeItem('discordUser');
+                        discordUserInfo = null; 
+                    }
                 }
             }
 
-            const urlParamsOriginal = new URLSearchParams(window.location.search);
-            const produtoSelecionadoUrl = discordUserInfo?.state_produto || urlParamsOriginal.get('produto');
-
             if (discordUserInfo && discordUserInfo.id) {
                 // Usuário está "logado"
-                configurarUIAposLogin(true, produtoSelecionadoUrl);
+                console.log("[window.onload] Usuário LOGADO. ID:", discordUserInfo.id, "Produto para processar:", produtoParaProcessar);
+                configurarUIAposLogin(true, produtoParaProcessar);
             } else {
                 // Usuário não está logado, inicia o fluxo OAuth2
-                // Pega o produto da URL inicial, se houver, para enviar no state
-                const produtoParaState = urlParamsOriginal.get('produto') || '';
-                window.location.href = `http://localhost:3001/auth/discord?state_produto=${encodeURIComponent(produtoParaState)}`;
+                const urlParamsOriginal = new URLSearchParams(window.location.search);
+                const produtoOriginalParaState = urlParamsOriginal.get('produto') || ''; 
+                const authRedirectUrl = `http://localhost:3001/auth/discord?state_produto=${encodeURIComponent(produtoOriginalParaState)}`;
+                console.log(`[window.onload] Usuário NÃO LOGADO. Redirecionando para OAuth2. state_produto: '${produtoOriginalParaState}'. URL: ${authRedirectUrl}`);
+                loadingMessageEl.textContent = 'Redirecionando para login com Discord...';
+                window.location.href = authRedirectUrl;
             }
         };
     </script>
